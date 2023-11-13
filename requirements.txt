@@ -4,5 +4,5 @@ python-dotenv
 flask
 gunicorn
 psutil
-# uvloop
+uvloop
 motor
