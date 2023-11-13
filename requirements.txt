@@ -6,3 +6,5 @@ gunicorn
 psutil
 uvloop
 motor
+requests
+yt-dlp
