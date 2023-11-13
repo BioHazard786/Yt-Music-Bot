@@ -1,0 +1,8 @@
+Pyrogram
+Tgcrypto
+python-dotenv
+flask
+gunicorn
+psutil
+# uvloop
+motor

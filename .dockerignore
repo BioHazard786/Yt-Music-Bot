@@ -1,0 +1,6 @@
+*__pycache__*
+*.session*
+*.vscode*
+*env 
+test.py
+.restartmsg
