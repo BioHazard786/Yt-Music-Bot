@@ -62,6 +62,7 @@ async def song_upload(message, reply, info, song_path):
             await save_song_to_db(
                 _id=info["id"],
                 title=dumped_song.audio.title,
+                artist=artist,
                 msg_id=dumped_song.id,
                 file_id=dumped_song.audio.file_id,
             )

@@ -28,10 +28,11 @@ DB = mongo["MusicDump"]
 INDEX = MongoDB(DB["INDEX"])
 
 
-async def save_song_to_db(_id, title, msg_id, file_id):
+async def save_song_to_db(_id, title, artist, msg_id, file_id):
     doc = {
         "_id": _id,
         "title": title,
+        "artist": artist,
         "msg_id": msg_id,
         "file_id": file_id,
     }
@@ -47,7 +48,7 @@ async def song_title_matching(query: str):
         {
             "$search": {
                 "index": "title_search",
-                "text": {"query": query, "path": ["title"]},
+                "text": {"query": query, "path": ["title", "artist"]},
             }
         }
     ]
