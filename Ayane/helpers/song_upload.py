@@ -4,9 +4,14 @@ from Ayane.helpers.thumbnail_downloader import dl_thumbnail_image
 
 async def song_upload(message, reply, info, song_path):
     executor = ThreadPoolExecutor(1)
+    artist = (
+        info.get("artist")
+        if info.get("artist")
+        else info.get("uploader").replace(" - Topic", "")
+    )
     caption = CAPTION.format(
         title=info["title"],
-        uploader=info["uploader"].replace(" - Topic", ""),
+        artist=artist,
     )
 
     thumbnail_path = await loop.run_in_executor(
@@ -26,6 +31,9 @@ async def song_upload(message, reply, info, song_path):
                         media=fpath,
                         thumb=thumbnail_path,
                         caption=caption,
+                        duration=info["duration"],
+                        performer=artist,
+                        title=info["title"],
                     )
                 )
                 await song.reply_photo(
@@ -39,8 +47,13 @@ async def song_upload(message, reply, info, song_path):
                         media=fpath,
                         caption=caption
                         + f"\n\n<b>Your Song has been Uploaded -</b> {message.from_user.mention()}",
+                        duration=info["duration"],
+                        performer=artist,
+                        title=info["title"],
                     )
                 )
+
+            print(song.audio.title, song.audio.file_name)
 
             dumped_song = await song.copy(
                 chat_id=DUMP_CHANNEL,

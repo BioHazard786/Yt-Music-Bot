@@ -63,5 +63,6 @@ def ytdl_opts(song_path: str):
 
 
 def extract_yt_id(url: str):
-    url_data = urlparse(url)
-    return parse_qs(url_data.query)["v"][0]
+    with yt_dlp.YoutubeDL() as ydl:
+        info = ydl.extract_info(url, download=False)
+    return info.get("id", None)

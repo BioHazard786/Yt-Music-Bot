@@ -7,3 +7,4 @@ from Ayane.config import CAPTION, YT_THUMB_LINK, DUMP_CHANNEL
 from Ayane.database.mongodb import save_song_to_db
 import os
 import requests
+import yt_dlp

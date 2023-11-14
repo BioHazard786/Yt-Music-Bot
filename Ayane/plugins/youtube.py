@@ -15,14 +15,21 @@ async def ytmusicdl(app, message):
     if "playlist" in url.lower():
         return await message.reply("<b>Playlist are not supported currently :(</b>")
 
+    reply = await message.reply_animation(
+        animation="https://i.pinimg.com/originals/48/6a/a0/486aa0fa1658b7522ecd8918908ece40.gif",
+        caption=f"<code>Extarcting YT Link ID...</code>",
+    )
+
     try:
         yt_id = extract_yt_id(url)
     except:
         return await message.reply(f"<b>Link is invalid : </b><code>{url}</code>")
 
-    reply = await message.reply_animation(
-        animation="https://i.pinimg.com/originals/48/6a/a0/486aa0fa1658b7522ecd8918908ece40.gif",
-        caption=f"<code>Checking Song in Database...</code>",
+    await reply.edit_media(
+        InputMediaAnimation(
+            media="https://i.pinimg.com/originals/48/6a/a0/486aa0fa1658b7522ecd8918908ece40.gif",
+            caption=f"<code>Checking Song in Database...</code>",
+        )
     )
 
     if saved_song := await check_song(yt_id):
