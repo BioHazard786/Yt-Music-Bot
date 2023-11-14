@@ -20,3 +20,10 @@ CAPTION = """
 <b>Artist</b> - <code>{artist}</code>
 """
 YT_THUMB_LINK = "https://i.ytimg.com/vi/{id}/mqdefault.jpg"
+
+HELP = f"""
+/start: Check bot is alive or not
+/stats: Show stats of the machine where the bot is hosted in.
+/yt [yt_url]: Download song and dump it in channel
+/help: To get this message
+"""

@@ -4,12 +4,11 @@ from pyrogram import Client, enums
 from importlib import import_module
 from subprocess import Popen
 import glob
-
-# import uvloop
+import uvloop
 
 __all__ = ["bot", "loop"]
 
-# uvloop.install()
+uvloop.install()
 
 bot = Client(
     "Ayane San",
@@ -22,9 +21,9 @@ bot = Client(
 
 loop = bot.loop  # ? Current event loop
 
-# server = Popen(
-#     f"gunicorn web.app:app --bind 0.0.0.0:8000", shell=True
-# )  # ? Important for deploying to Koyeb.app
+server = Popen(
+    f"gunicorn web.app:app --bind 0.0.0.0:8000", shell=True
+)  # ? Important for deploying to Koyeb.app
 
 files = glob.glob(join(join(dirname(__file__), "plugins"), "*py"))
 plugins = [

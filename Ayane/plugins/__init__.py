@@ -20,7 +20,7 @@ from Ayane.database.mongodb import (
     song_title_matching,
     initial_search_result,
 )
-from Ayane.config import botStartTime
+from Ayane.config import botStartTime, HELP
 import shutil
 import psutil
 import os
