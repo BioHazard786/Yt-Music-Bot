@@ -36,6 +36,7 @@ async def song_upload(message, reply, info, song_path):
                         title=info["title"],
                     )
                 )
+                await asyncio.sleep(3)
                 await song.reply_photo(
                     photo=thumbnail_path,
                     quote=True,
@@ -52,8 +53,6 @@ async def song_upload(message, reply, info, song_path):
                         title=info["title"],
                     )
                 )
-
-            print(song.audio.title, song.audio.file_name)
 
             dumped_song = await song.copy(
                 chat_id=DUMP_CHANNEL,
