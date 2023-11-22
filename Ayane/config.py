@@ -15,6 +15,7 @@ API_HASH = getenv("API_HASH")
 DUMP_CHANNEL = int(getenv("DUMP_CHANNEL"))
 MONGODB = getenv("MONGODB")
 
+REGEX_PT = r"(youtu.*be.*)\/(watch\?v=|embed\/|v|shorts|)(.*?((?=[&#?])|$))"
 CAPTION = """
 <b>Title</b> - <code>{title}</code>
 <b>Artist</b> - <code>{artist}</code>

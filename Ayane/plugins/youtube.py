@@ -1,6 +1,15 @@
 from .__init__ import *
 
 
+@bot.on_message(filters.regex(pattern=REGEX_PT))
+async def ytmusicdl(app, message):
+    url = message.text
+    if "playlist" in url.lower():
+        return await message.reply("<b>Playlist are not supported currently :(</b>")
+
+    await ytmusicdlhelper(url, message)
+
+
 @bot.on_message(command_creator("yt"))
 async def ytmusicdl(app, message):
     args = message.text.split(" ")
@@ -15,6 +24,10 @@ async def ytmusicdl(app, message):
     if "playlist" in url.lower():
         return await message.reply("<b>Playlist are not supported currently :(</b>")
 
+    await ytmusicdlhelper(url, message)
+
+
+async def ytmusicdlhelper(url: str, message: Message):
     reply = await message.reply_animation(
         animation="https://i.pinimg.com/originals/48/6a/a0/486aa0fa1658b7522ecd8918908ece40.gif",
         caption=f"<code>Extarcting YT Link ID...</code>",
