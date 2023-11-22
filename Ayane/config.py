@@ -9,11 +9,18 @@ except:
 
 botStartTime = time()
 
-BOT_TOKEN = getenv("BOT_TOKEN")
-API_ID = int(getenv("API_ID"))
-API_HASH = getenv("API_HASH")
-DUMP_CHANNEL = int(getenv("DUMP_CHANNEL"))
-MONGODB = getenv("MONGODB")
+
+class TeleConf(object):
+    BOT_TOKEN = getenv("BOT_TOKEN")
+    API_ID = int(getenv("API_ID"))
+    API_HASH = getenv("API_HASH")
+    DUMP_CHANNEL = int(getenv("DUMP_CHANNEL"))
+
+
+class MongoConf(object):
+    MONGODB = getenv("MONGODB")
+    DB_NAME = getenv("DB_NAME", "MusicDump")
+
 
 REGEX_PT = r"(youtu.*be.*)\/(watch\?v=|embed\/|v|shorts|)(.*?((?=[&#?])|$))"
 CAPTION = """

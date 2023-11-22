@@ -1,5 +1,5 @@
 from motor.motor_asyncio import AsyncIOMotorClient
-from Ayane.config import MONGODB
+from Ayane.config import MongoConf
 
 
 class MongoDB:
@@ -23,8 +23,8 @@ class MongoDB:
         await self.update(_id, update_item)
 
 
-mongo = AsyncIOMotorClient(MONGODB)
-DB = mongo["MusicDump"]
+mongo = AsyncIOMotorClient(MongoConf.MONGODB)
+DB = mongo[MongoConf.DB_NAME]
 INDEX = MongoDB(DB["INDEX"])
 
 

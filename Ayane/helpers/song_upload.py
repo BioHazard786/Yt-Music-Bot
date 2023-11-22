@@ -55,7 +55,7 @@ async def song_upload(message, reply, info, song_path):
                 )
 
             dumped_song = await song.copy(
-                chat_id=DUMP_CHANNEL,
+                chat_id=TeleConf.DUMP_CHANNEL,
                 caption=caption,
             )
             await save_song_to_db(
