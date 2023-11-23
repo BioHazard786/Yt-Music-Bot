@@ -41,7 +41,7 @@ async def message_helper(url: str, message: Message):
         reply = await message.reply_photo(
             photo=choice(ICONS),
             caption=STATUS.format(
-                title="Checking Song in Database", status="CheckingUp...📝"
+                title="Checking Song in Database", status="Checking...📝"
             ),
         )
         await yt_music_dl_helper(url, reply, message.from_user)
@@ -68,7 +68,7 @@ async def yt_music_dl_helper(
             InputMediaPhoto(
                 media=choice(ICONS),
                 caption=STATUS.format(
-                    title="Checking Song in Database", status="CheckingUp...📝"
+                    title="Checking Song in Database", status="Checking...📝"
                 ),
             )
         )
@@ -91,7 +91,7 @@ async def yt_music_dl_helper(
             caption=STATUS.format(
                 title=f'{song_info.get("title")} ({song_info.get("current_song")}/{song_info.get("total_songs")})'
                 or f"Song ({yt_id})",
-                status="Downloading...📥,,,"
+                status="Downloading...📥",
             ),
         )
     )
@@ -133,6 +133,7 @@ async def yt_music_dl_helper(
 async def yt_music_playlist_dl_helper(url: str, reply: Message, user: User):
     current_song = 1
     try:
+        playlist_upload_start_time = time()
         with yt_dlp.YoutubeDL({"extract_flat": True}) as ydl:
             info = ydl.extract_info(url)
 
@@ -149,15 +150,21 @@ async def yt_music_playlist_dl_helper(url: str, reply: Message, user: User):
                 },
             )
             current_song += 1
+            await asyncio.sleep(3)
 
         playlist_thumbnail = await loop.run_in_executor(
             ThreadPoolExecutor(1),
             lambda: dl_thumbnail_image(info["thumbnails"][-1]["url"], user.id),
         )
+        playlist_upload_finish_time = get_readable_time(
+            time() - playlist_upload_start_time
+        )
         await reply.reply_photo(
             photo=playlist_thumbnail,
             quote=True,
-            caption=PLAYLIST_UPLOADED.format(song_num=info["playlist_count"]),
+            caption=PLAYLIST_UPLOADED.format(
+                song_num=info["playlist_count"], time=playlist_upload_finish_time
+            ),
         )
         os.remove(playlist_thumbnail)
 

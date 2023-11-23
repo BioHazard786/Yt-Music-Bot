@@ -35,6 +35,7 @@ STATUS = """
 PLAYLIST_UPLOADED = """
 <b>➜ Status : </b><code>Your Playlist has been uploaded</code>
 <b>➜ Total : </b><code>{song_num} Songs</code>
+<b>➜ Time Taken : </b><code>{time}</code>
 """
 
 
