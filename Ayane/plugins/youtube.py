@@ -74,6 +74,15 @@ async def yt_music_dl_helper(
         )
 
         if saved_song := await check_song(yt_id):
+            await reply.edit_media(
+                InputMediaPhoto(
+                    media=choice(ICONS),
+                    caption=STATUS.format(
+                        title=f"{saved_song['title']} - {saved_song['artist']}",
+                        status="Found...✅",
+                    ),
+                )
+            )
             return await bot.send_cached_media(
                 chat_id=reply.chat.id,
                 file_id=saved_song["file_id"],
@@ -90,7 +99,8 @@ async def yt_music_dl_helper(
             media=choice(ICONS),
             caption=STATUS.format(
                 title=f'{song_info.get("title")} ({song_info.get("current_song")}/{song_info.get("total_songs")})'
-                or f"Song ({yt_id})",
+                if playlist
+                else f"Song ({yt_id})",
                 status="Downloading...📥",
             ),
         )
@@ -106,12 +116,15 @@ async def yt_music_dl_helper(
             shutil.rmtree(song_path)
         except:
             pass
-        return await reply.edit_media(
-            InputMediaPhoto(
-                media=choice(ICONS),
-                caption=STATUS.format(title=url, status="Invalid...⛔️"),
+        if not playlist:
+            return await reply.edit_media(
+                InputMediaPhoto(
+                    media=choice(ICONS),
+                    caption=STATUS.format(title=url, status="Invalid...⛔️"),
+                )
             )
-        )
+        else:
+            return
     try:
         await reply.edit_media(
             InputMediaPhoto(
