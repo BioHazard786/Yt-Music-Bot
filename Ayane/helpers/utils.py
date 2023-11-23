@@ -43,8 +43,10 @@ def get_readable_file_size(size_in_bytes: int) -> str:
 def ytdl_opts(song_path: str):
     return {
         "format": "bestaudio/best",
-        "writethumbnail": "True",
-        "keepvideo": "False",
+        "writethumbnail": True,
+        "keepvideo": False,
+        "ignoreerrors": True,
+        "noplaylist": True,
         "postprocessors": [
             {
                 "key": "FFmpegExtractAudio",
@@ -52,10 +54,15 @@ def ytdl_opts(song_path: str):
                 "preferredquality": "0",
             },
             {
+                "key": "FFmpegThumbnailsConvertor",
+                "format": "jpg",
+            },
+            {
                 "key": "FFmpegMetadata",
             },
             {
                 "key": "EmbedThumbnail",
+                "already_have_thumbnail": True,
             },
         ],
         "outtmpl": f"{song_path}/%(title)s.%(ext)s",
@@ -63,6 +70,7 @@ def ytdl_opts(song_path: str):
 
 
 def extract_yt_id(url: str):
-    with yt_dlp.YoutubeDL() as ydl:
-        info = ydl.extract_info(url, download=False)
-    return info.get("id", None)
+    if match := re.search(REGEX_PT, url):
+        return match[3]
+    else:
+        raise Exception("Link is Invalid")

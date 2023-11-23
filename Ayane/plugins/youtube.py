@@ -1,13 +1,10 @@
 from .__init__ import *
 
 
-@bot.on_message(filters.regex(pattern=REGEX_PT))
+@bot.on_message(filters.regex(pattern=REGEX_PT) & ~filters.regex(pattern=r"/yt"))
 async def ytmusicdl(app, message):
     url = message.text
-    if "playlist" in url.lower():
-        return await message.reply("<b>Playlist are not supported currently :(</b>")
-
-    await ytmusicdlhelper(url, message)
+    await message_helper(url, message)
 
 
 @bot.on_message(command_creator("yt"))
@@ -21,43 +18,81 @@ async def ytmusicdl(app, message):
     else:
         return await message.reply("<b>Use like this : </b><code>/yt link</code>")
 
+    await message_helper(url, message)
+
+
+async def message_helper(url: str, message: Message):
     if "playlist" in url.lower():
-        return await message.reply("<b>Playlist are not supported currently :(</b>")
+        reply = await message.reply_photo(
+            photo=choice(ICONS),
+            caption=STATUS.format(
+                title="Importing Songs from Playlist", status="Extracting...📂"
+            ),
+        )
+        await yt_music_playlist_dl_helper(url, reply, message.from_user)
+    else:
+        try:
+            yt_id = extract_yt_id(url)
+        except Exception as e:
+            return await message.reply_photo(
+                photo=choice(ICONS),
+                caption=STATUS.format(title=url, status="Invalid...⛔️"),
+            )
+        reply = await message.reply_photo(
+            photo=choice(ICONS),
+            caption=STATUS.format(
+                title="Checking Song in Database", status="CheckingUp...📝"
+            ),
+        )
+        await yt_music_dl_helper(url, reply, message.from_user)
 
-    await ytmusicdlhelper(url, message)
 
-
-async def ytmusicdlhelper(url: str, message: Message):
-    reply = await message.reply_animation(
-        animation="https://i.pinimg.com/originals/48/6a/a0/486aa0fa1658b7522ecd8918908ece40.gif",
-        caption=f"<code>Extarcting YT Link ID...</code>",
-    )
-
+async def yt_music_dl_helper(
+    url: str, reply: Message, user: User, playlist: bool = False, song_info: dict = None
+):
     try:
         yt_id = extract_yt_id(url)
-    except:
-        return await message.reply(f"<b>Link is invalid : </b><code>{url}</code>")
+    except Exception as e:
+        return
+
+    if not playlist:
+        if saved_song := await check_song(yt_id):
+            await reply.delete()
+            return await bot.send_cached_media(
+                chat_id=reply.chat.id,
+                file_id=saved_song["file_id"],
+                caption=f"<b>Your Song has been Uploaded -</b> {user.mention()}",
+            )
+    else:
+        await reply.edit_media(
+            InputMediaPhoto(
+                media=choice(ICONS),
+                caption=STATUS.format(
+                    title="Checking Song in Database", status="CheckingUp...📝"
+                ),
+            )
+        )
+
+        if saved_song := await check_song(yt_id):
+            return await bot.send_cached_media(
+                chat_id=reply.chat.id,
+                file_id=saved_song["file_id"],
+                caption=CAPTION.format(
+                    title=saved_song["title"],
+                    artist=saved_song["artist"],
+                ),
+            )
+
+    song_path = os.path.join(os.getcwd(), f"music_{user.id}")
 
     await reply.edit_media(
-        InputMediaAnimation(
-            media="https://i.pinimg.com/originals/48/6a/a0/486aa0fa1658b7522ecd8918908ece40.gif",
-            caption=f"<code>Checking Song in Database...</code>",
-        )
-    )
-
-    if saved_song := await check_song(yt_id):
-        await reply.delete()
-        return await message.reply_cached_media(
-            saved_song["file_id"],
-            caption=f"<b>Your Song has been Uploaded -</b> {message.from_user.mention}",
-        )
-
-    song_path = os.path.join(os.getcwd(), f"music_{message.from_user.id}")
-
-    await reply.edit_media(
-        InputMediaAnimation(
-            media="https://i.pinimg.com/originals/48/6a/a0/486aa0fa1658b7522ecd8918908ece40.gif",
-            caption=f"<code>Downloading from YT...</code>",
+        InputMediaPhoto(
+            media=choice(ICONS),
+            caption=STATUS.format(
+                title=f'{song_info.get("title")} ({song_info.get("current_song")}/{song_info.get("total_songs")})'
+                or f"Song ({yt_id})",
+                status="Downloading...📥,,,"
+            ),
         )
     )
 
@@ -73,18 +108,63 @@ async def ytmusicdlhelper(url: str, message: Message):
             pass
         return await reply.edit_media(
             InputMediaPhoto(
-                media="https://c4.wallpaperflare.com/wallpaper/976/117/318/anime-girls-404-not-found-glowing-eyes-girls-frontline-wallpaper-preview.jpg",
-                caption=f"<b>Link is invalid : </b><code>{url}</code>",
+                media=choice(ICONS),
+                caption=STATUS.format(title=url, status="Invalid...⛔️"),
             )
         )
     try:
         await reply.edit_media(
-            InputMediaAnimation(
-                media="https://i.pinimg.com/originals/48/6a/a0/486aa0fa1658b7522ecd8918908ece40.gif",
-                caption="<code>Download completed, Sending to telegram...</code>",
+            InputMediaPhoto(
+                media=YT_THUMB_LINK.format(id=info["id"]),
+                caption=STATUS.format(
+                    title=f'{song_info.get("title")} ({song_info.get("current_song")}/{song_info.get("total_songs")})'
+                    if playlist
+                    else info["title"],
+                    status="Uploading...📤",
+                ),
             )
         )
     except:
         pass
 
-    await song_upload(message, reply, info, song_path)
+    await song_upload(reply, info, user, song_path, playlist)
+
+
+async def yt_music_playlist_dl_helper(url: str, reply: Message, user: User):
+    current_song = 1
+    try:
+        with yt_dlp.YoutubeDL({"extract_flat": True}) as ydl:
+            info = ydl.extract_info(url)
+
+        for song in info["entries"]:
+            await yt_music_dl_helper(
+                song["url"],
+                reply,
+                user,
+                True,
+                {
+                    "title": song["title"],
+                    "current_song": current_song,
+                    "total_songs": info["playlist_count"],
+                },
+            )
+            current_song += 1
+
+        playlist_thumbnail = await loop.run_in_executor(
+            ThreadPoolExecutor(1),
+            lambda: dl_thumbnail_image(info["thumbnails"][-1]["url"], user.id),
+        )
+        await reply.reply_photo(
+            photo=playlist_thumbnail,
+            quote=True,
+            caption=PLAYLIST_UPLOADED.format(song_num=info["playlist_count"]),
+        )
+        os.remove(playlist_thumbnail)
+
+    except:
+        return await reply.edit_media(
+            InputMediaPhoto(
+                media=choice(ICONS),
+                caption=STATUS.format(title=url, status="Invalid...⛔️"),
+            )
+        )

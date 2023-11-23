@@ -1,4 +1,4 @@
-from Ayane import bot
+from Ayane import bot, loop
 from pyrogram import Client, filters
 from pyrogram.types import (
     Message,
@@ -6,6 +6,7 @@ from pyrogram.types import (
     InputMediaPhoto,
     InlineQueryResultCachedAudio,
     InlineQuery,
+    User,
 )
 from Ayane.helpers.utils import (
     command_creator,
@@ -15,14 +16,26 @@ from Ayane.helpers.utils import (
     extract_yt_id,
 )
 from Ayane.helpers.song_upload import song_upload
+from Ayane.helpers.thumbnail_downloader import dl_thumbnail_image
 from Ayane.database.mongodb import (
     check_song,
     song_title_matching,
     initial_search_result,
 )
-from Ayane.config import botStartTime, HELP, REGEX_PT
+from Ayane.config import (
+    botStartTime,
+    HELP,
+    REGEX_PT,
+    ICONS,
+    STATUS,
+    PLAYLIST_UPLOADED,
+    CAPTION,
+    YT_THUMB_LINK,
+)
+from time import time
+from random import choice
+from concurrent.futures import ThreadPoolExecutor
 import shutil
 import psutil
 import os
-from time import time
 import yt_dlp
