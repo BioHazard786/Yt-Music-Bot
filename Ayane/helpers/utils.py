@@ -45,7 +45,6 @@ def ytdl_opts(song_path: str):
         "format": "bestaudio/best",
         "writethumbnail": True,
         "keepvideo": False,
-        "ignoreerrors": True,
         "noplaylist": True,
         "windowsfilenames": True,
         "postprocessors": [

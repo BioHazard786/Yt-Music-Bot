@@ -81,7 +81,7 @@ async def yt_music_dl_helper(
                 InputMediaPhoto(
                     media=choice(ICONS),
                     caption=STATUS.format(
-                        title=f"{saved_song['title']} - {saved_song['artist']}",
+                        title=f"{saved_song['title']} - {saved_song['artist']} ({song_info.get('current_song')}/{song_info.get('total_songs')})",
                         status="Found...✅",
                     ),
                 )
@@ -125,11 +125,15 @@ async def yt_music_dl_helper(
             return await reply.edit_media(
                 InputMediaPhoto(
                     media=choice(ICONS),
-                    caption=STATUS.format(title=url, status="Invalid...⛔️"),
+                    caption=STATUS.format(title=url, status="Unavailable...❎"),
                 )
             )
         else:
-            return
+            return await bot.send_photo(
+                chat_id=reply.chat.id,
+                photo=choice(ICONS),
+                caption=STATUS.format(title=url, status="Unavailable...❎"),
+            )
     try:
         await reply.edit_media(
             InputMediaPhoto(
@@ -142,8 +146,8 @@ async def yt_music_dl_helper(
                 ),
             )
         )
-    except:
-        pass
+    except Exception as e:
+        print(str(e))
 
     await song_upload(reply, info, user, song_path, song_upload_start_time, playlist)
 
@@ -190,10 +194,10 @@ async def yt_music_playlist_dl_helper(url: str, reply: Message, user: User):
         )
         os.remove(playlist_thumbnail)
 
-    except:
+    except Exception as e:
         return await reply.edit_media(
             InputMediaPhoto(
                 media=choice(ICONS),
-                caption=STATUS.format(title=url, status="Invalid...⛔️"),
+                caption=STATUS.format(title=str(e), status="Error...❌"),
             )
         )

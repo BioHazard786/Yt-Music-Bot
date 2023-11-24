@@ -1,4 +1,5 @@
 from os.path import dirname, basename, isfile, join
+from os import environ
 from .config import TeleConf
 from pyrogram import Client, enums
 from importlib import import_module
@@ -21,9 +22,10 @@ bot = Client(
 
 loop = bot.loop  # ? Current event loop
 
-server = Popen(
-    f"gunicorn web.app:app --bind 0.0.0.0:8000", shell=True
-)  # ? Important for deploying to Koyeb.app
+if not "DYNO" in environ:  # * Optimized for heroku
+    server = Popen(
+        f"gunicorn web.app:app --bind 0.0.0.0:8000", shell=True
+    )  # * Important for deploying to Koyeb.app
 
 files = glob.glob(join(join(dirname(__file__), "plugins"), "*py"))
 plugins = [
