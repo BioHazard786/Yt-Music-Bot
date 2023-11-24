@@ -1,7 +1,10 @@
 from .__init__ import *
+from Ayane.helpers.utils import get_readable_time
 
 
-async def song_upload(reply, info, user, song_path, playlist=False):
+async def song_upload(
+    reply, info, user, song_path, song_upload_start_time, playlist=False
+):
     artist = (
         info.get("artist")
         if info.get("artist")
@@ -13,41 +16,74 @@ async def song_upload(reply, info, user, song_path, playlist=False):
         artist=artist,
     )
 
-    final_song_path = os.path.join(song_path, f"{info['title']}.mp3")
-    thumb_path = os.path.join(song_path, f"{info['title']}.jpg")
+    final_song_path = glob.glob(os.path.join(song_path, "*mp3"))
+    thumb_path = glob.glob(os.path.join(song_path, "*jpg"))
 
-    if not os.path.isfile(final_song_path):
-        return
+    if not final_song_path and not thumb_path:
+        if playlist:
+            return await bot.send_photo(
+                chat_id=reply.chat.id,
+                photo=choice(ICONS),
+                caption=f"<b>{info['title']} Not Uploaded -</b> {user.mention()}",
+            )
+        else:
+            return await reply.edit_media(
+                InputMediaPhoto(
+                    media=choice(ICONS),
+                    caption=f"<b>{info['title']} Not Uploaded -</b> {user.mention()}",
+                ),
+            )
+
+    final_song_path = final_song_path[0]
+    thumb_path = thumb_path[0]
 
     if not playlist:
-        song = await reply.edit_media(
-            InputMediaAudio(
-                media=final_song_path,
+        try:
+            song = await reply.edit_media(
+                InputMediaAudio(
+                    media=final_song_path,
+                    thumb=thumb_path,
+                    caption=caption,
+                    duration=info["duration"],
+                    performer=artist,
+                    title=info["title"],
+                )
+            )
+        except:
+            return await reply.edit_media(
+                InputMediaPhoto(
+                    media=choice(ICONS),
+                    caption=f"<b>{info['title']} Not Uploaded -</b> {user.mention()}",
+                ),
+            )
+
+        song_upload_finish_time = get_readable_time(time() - song_upload_start_time)
+        await asyncio.sleep(3)
+        await song.reply_photo(
+            photo=thumb_path,
+            quote=True,
+            caption=SONG_UPLOADED.format(
+                song=info["title"], time=song_upload_finish_time, mention=user.mention()
+            ),
+        )
+
+    else:
+        try:
+            song = await bot.send_audio(
+                chat_id=reply.chat.id,
+                audio=final_song_path,
                 thumb=thumb_path,
                 caption=caption,
                 duration=info["duration"],
                 performer=artist,
                 title=info["title"],
             )
-        )
-
-        await asyncio.sleep(3)
-        await song.reply_photo(
-            photo=thumb_path,
-            quote=True,
-            caption=f"<b>Your Song has been Uploaded -</b> {user.mention()}",
-        )
-
-    else:
-        song = await bot.send_audio(
-            chat_id=reply.chat.id,
-            audio=final_song_path,
-            thumb=thumb_path,
-            caption=caption,
-            duration=info["duration"],
-            performer=artist,
-            title=info["title"],
-        )
+        except:
+            return await bot.send_photo(
+                chat_id=reply.chat.id,
+                photo=choice(ICONS),
+                caption=f"<b>{info['title']} Not Uploaded -</b> {user.mention()}",
+            )
 
     dumped_song = await song.copy(
         chat_id=TeleConf.DUMP_CHANNEL,

@@ -55,6 +55,8 @@ async def yt_music_dl_helper(
     except Exception as e:
         return
 
+    song_upload_start_time = time()
+
     if not playlist:
         if saved_song := await check_song(yt_id):
             await reply.delete()
@@ -74,6 +76,7 @@ async def yt_music_dl_helper(
         )
 
         if saved_song := await check_song(yt_id):
+            await asyncio.sleep(3)
             await reply.edit_media(
                 InputMediaPhoto(
                     media=choice(ICONS),
@@ -92,7 +95,7 @@ async def yt_music_dl_helper(
                 ),
             )
 
-    song_path = os.path.join(os.getcwd(), f"music_{user.id}")
+    song_path = os.path.join(os.getcwd(), f"song_{user.id}")
 
     await reply.edit_media(
         InputMediaPhoto(
@@ -140,7 +143,7 @@ async def yt_music_dl_helper(
     except:
         pass
 
-    await song_upload(reply, info, user, song_path, playlist)
+    await song_upload(reply, info, user, song_path, song_upload_start_time, playlist)
 
 
 async def yt_music_playlist_dl_helper(url: str, reply: Message, user: User):
@@ -167,7 +170,7 @@ async def yt_music_playlist_dl_helper(url: str, reply: Message, user: User):
 
         playlist_thumbnail = await loop.run_in_executor(
             ThreadPoolExecutor(1),
-            lambda: dl_thumbnail_image(info["thumbnails"][-1]["url"], user.id),
+            lambda: dl_thumbnail_image(info["thumbnails"][0]["url"], user.id),
         )
         playlist_upload_finish_time = get_readable_time(
             time() - playlist_upload_start_time
@@ -176,7 +179,11 @@ async def yt_music_playlist_dl_helper(url: str, reply: Message, user: User):
             photo=playlist_thumbnail,
             quote=True,
             caption=PLAYLIST_UPLOADED.format(
-                song_num=info["playlist_count"], time=playlist_upload_finish_time
+                song_num=info["playlist_count"],
+                time=playlist_upload_finish_time,
+                duration=playlist_duration(info["entries"]),
+                mention=user.mention(),
+                playlist=info["title"],
             ),
         )
         os.remove(playlist_thumbnail)

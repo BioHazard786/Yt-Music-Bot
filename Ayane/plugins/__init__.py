@@ -14,6 +14,7 @@ from Ayane.helpers.utils import (
     get_readable_time,
     ytdl_opts,
     extract_yt_id,
+    playlist_duration,
 )
 from Ayane.helpers.song_upload import song_upload
 from Ayane.helpers.thumbnail_downloader import dl_thumbnail_image

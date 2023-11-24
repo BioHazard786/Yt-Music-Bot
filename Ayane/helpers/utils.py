@@ -13,15 +13,15 @@ def get_readable_time(seconds: int) -> str:
     (days, remainder) = divmod(seconds, 86400)
     days = int(days)
     if days != 0:
-        result += f"{days}d"
+        result += f"{days}d "
     (hours, remainder) = divmod(remainder, 3600)
     hours = int(hours)
     if hours != 0:
-        result += f"{hours}h"
+        result += f"{hours}h "
     (minutes, seconds) = divmod(remainder, 60)
     minutes = int(minutes)
     if minutes != 0:
-        result += f"{minutes}m"
+        result += f"{minutes}m "
     seconds = int(seconds)
     result += f"{seconds}s"
     return result
@@ -47,6 +47,7 @@ def ytdl_opts(song_path: str):
         "keepvideo": False,
         "ignoreerrors": True,
         "noplaylist": True,
+        "windowsfilenames": True,
         "postprocessors": [
             {
                 "key": "FFmpegExtractAudio",
@@ -74,3 +75,10 @@ def extract_yt_id(url: str):
         return match[3]
     else:
         raise Exception("Link is Invalid")
+
+
+def playlist_duration(songs: dict):
+    total_duration = 0
+    for song in songs:
+        total_duration += song["duration"]
+    return get_readable_time(total_duration)

@@ -33,8 +33,14 @@ STATUS = """
 <b>➜ Status : </b><code>{status}</code>
 """
 PLAYLIST_UPLOADED = """
-<b>➜ Status : </b><code>Your Playlist has been uploaded</code>
+<b>➜ Status : </b><code>{playlist} has been uploaded -</code> {mention}
 <b>➜ Total : </b><code>{song_num} Songs</code>
+<b>➜ Playlist Duration : </b><code>{duration}</code>
+<b>➜ Time Taken : </b><code>{time}</code>
+"""
+
+SONG_UPLOADED = """
+<b>➜ Status : </b><code>{song} has been uploaded -</code> {mention}
 <b>➜ Time Taken : </b><code>{time}</code>
 """
 
