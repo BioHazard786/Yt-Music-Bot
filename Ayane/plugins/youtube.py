@@ -132,7 +132,9 @@ async def yt_music_dl_helper(
             return await bot.send_photo(
                 chat_id=reply.chat.id,
                 photo=choice(ICONS),
-                caption=STATUS.format(title=url, status="Unavailable...❎"),
+                caption=STATUS.format(
+                    title=song_info.get("title"), status="Unavailable...❎"
+                ),
             )
     try:
         await reply.edit_media(
