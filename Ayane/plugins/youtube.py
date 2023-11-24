@@ -86,6 +86,7 @@ async def yt_music_dl_helper(
                     ),
                 )
             )
+            await asyncio.sleep(3)
             return await bot.send_cached_media(
                 chat_id=reply.chat.id,
                 file_id=saved_song["file_id"],
@@ -97,6 +98,7 @@ async def yt_music_dl_helper(
 
     song_path = os.path.join(os.getcwd(), f"song_{user.id}")
 
+    await asyncio.sleep(3)
     await reply.edit_media(
         InputMediaPhoto(
             media=choice(ICONS),
@@ -166,7 +168,7 @@ async def yt_music_playlist_dl_helper(url: str, reply: Message, user: User):
                 },
             )
             current_song += 1
-            await asyncio.sleep(3)
+            await asyncio.sleep(5)
 
         playlist_thumbnail = await loop.run_in_executor(
             ThreadPoolExecutor(1),
