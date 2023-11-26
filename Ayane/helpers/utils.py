@@ -42,7 +42,7 @@ def get_readable_file_size(size_in_bytes: int) -> str:
 
 def ytdl_opts(song_path: str):
     return {
-        "format": "bestaudio/best",
+        "format": "m4a/bestaudio/best",
         "writethumbnail": True,
         "keepvideo": False,
         "noplaylist": True,
@@ -50,7 +50,7 @@ def ytdl_opts(song_path: str):
         "postprocessors": [
             {
                 "key": "FFmpegExtractAudio",
-                # "preferredcodec": "m4a",
+                "preferredcodec": "m4a",
                 "preferredquality": "0",
             },
             {

@@ -16,7 +16,7 @@ async def song_upload(
         artist=artist,
     )
 
-    final_song_path = glob.glob(os.path.join(song_path, "*opus"))
+    final_song_path = glob.glob(os.path.join(song_path, "*m4a"))
     thumb_path = glob.glob(os.path.join(song_path, "*jpg"))
 
     if not final_song_path and not thumb_path:
