@@ -25,4 +25,4 @@ async def inlineSearch(client: Client, query: InlineQuery):
                     )
                 )
         if results:
-            await query.answer(results, cache_time=1)
+            await query.answer(results)

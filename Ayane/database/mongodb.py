@@ -49,8 +49,9 @@ async def song_title_matching(query: str):
             "$search": {
                 "index": "title_search",
                 "text": {"query": query, "path": ["title", "artist"]},
-            }
-        }
+            },
+        },
+        {"$limit": 50},
     ]
     async for doc in DB.INDEX.aggregate(pipeline):
         yield doc

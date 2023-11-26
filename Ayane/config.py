@@ -15,6 +15,7 @@ class TeleConf(object):
     API_ID = int(getenv("API_ID"))
     API_HASH = getenv("API_HASH")
     DUMP_CHANNEL = int(getenv("DUMP_CHANNEL"))
+    LOG_CHANNEL = int(getenv("LOG_CHANNEL"))
 
 
 class MongoConf(object):
@@ -24,14 +25,17 @@ class MongoConf(object):
 
 REGEX_PT = r"(youtu.*be.*)\/(watch\?v=|embed\/|v|shorts|)(.*?((?=[&#?])|$))"
 YT_THUMB_LINK = "https://i.ytimg.com/vi/{id}/mqdefault.jpg"
+
 CAPTION = """
 <b>Title</b> - <code>{title}</code>
 <b>Artist</b> - <code>{artist}</code>
 """
+
 STATUS = """
 <b>➜ Title : </b><code>{title}</code>
 <b>➜ Status : </b><code>{status}</code>
 """
+
 PLAYLIST_UPLOADED = """
 <b>➜ Status : </b><code>{playlist} has been uploaded -</code> {mention}
 <b>➜ Total : </b><code>{song_num} Songs</code>
@@ -44,6 +48,13 @@ SONG_UPLOADED = """
 <b>➜ Time Taken : </b><code>{time}</code>
 """
 
+LOG_CHANNEL_MESSAGE = """
+<b>➜ 𝗥𝗲𝗾𝘂𝗲𝘀𝘁𝗲𝗱 𝗕𝘆 : </b>{requested_by}
+
+<b>➜ 𝗦𝗼𝗻𝗴 𝗡𝗮𝗺𝗲 : </b><code>{song_name}</code>
+
+<b>➜ 𝗦𝗼𝗻𝗴 𝗨𝗿𝗹 : </b><code>{song_url}</code>
+"""
 
 HELP = f"""
 /start: Check bot is alive or not
