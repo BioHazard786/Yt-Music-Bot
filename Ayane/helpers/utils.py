@@ -50,7 +50,7 @@ def ytdl_opts(song_path: str):
         "postprocessors": [
             {
                 "key": "FFmpegExtractAudio",
-                "preferredcodec": "mp3",
+                # "preferredcodec": "m4a",
                 "preferredquality": "0",
             },
             {
