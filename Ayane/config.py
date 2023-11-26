@@ -28,7 +28,7 @@ YT_THUMB_LINK = "https://i.ytimg.com/vi/{id}/mqdefault.jpg"
 
 CAPTION = """
 <b>𝗧𝗶𝘁𝗹𝗲</b> - <code>{title}</code>
-<b>Artist</b> - <code>{artist}</code>
+<b>𝗔𝗿𝘁𝗶𝘀𝘁</b> - <code>{artist}</code>
 """
 
 STATUS = """
