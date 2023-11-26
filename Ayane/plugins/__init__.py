@@ -25,6 +25,7 @@ from Ayane.database.mongodb import (
 )
 from Ayane.config import (
     botStartTime,
+    TeleConf,
     HELP,
     REGEX_PT,
     ICONS,
@@ -32,6 +33,7 @@ from Ayane.config import (
     PLAYLIST_UPLOADED,
     CAPTION,
     YT_THUMB_LINK,
+    PLAYLIST_LOG_CHANNEL_MESSAGE,
 )
 from time import time
 from random import choice

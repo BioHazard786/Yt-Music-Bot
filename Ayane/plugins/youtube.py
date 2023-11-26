@@ -174,7 +174,7 @@ async def yt_music_playlist_dl_helper(url: str, reply: Message, user: User):
                 },
             )
             current_song += 1
-            await asyncio.sleep(5)
+            await asyncio.sleep(3)
 
         playlist_thumbnail = await loop.run_in_executor(
             ThreadPoolExecutor(1),
@@ -192,6 +192,17 @@ async def yt_music_playlist_dl_helper(url: str, reply: Message, user: User):
                 duration=playlist_duration(info["entries"]),
                 mention=user.mention(),
                 playlist=info["title"],
+            ),
+        )
+        await bot.send_message(
+            chat_id=TeleConf.LOG_CHANNEL,
+            text=PLAYLIST_LOG_CHANNEL_MESSAGE.format(
+                requested_by=user.mention(),
+                playlist_name=info["title"],
+                playlist_url=info["original_url"],
+                duration=playlist_duration(info["entries"]),
+                song_count=info["playlist_count"],
+                time_taken=playlist_upload_finish_time,
             ),
         )
         os.remove(playlist_thumbnail)

@@ -98,24 +98,26 @@ async def song_upload(
         file_id=dumped_song.audio.file_id,
     )
 
-    await bot.send_message(
-        chat_id=TeleConf.LOG_CHANNEL,
-        text=LOG_CHANNEL_MESSAGE.format(
-            requested_by=user.mention(),
-            song_name=info["title"],
-            song_url=info["url"],
-        ),
-        reply_markup=InlineKeyboardMarkup(
-            inline_keyboard=[
-                [
-                    InlineKeyboardButton(
-                        text="Song",
-                        url=dumped_song.link,
-                    )
+    if not playlist:
+        await bot.send_message(
+            chat_id=TeleConf.LOG_CHANNEL,
+            text=LOG_CHANNEL_MESSAGE.format(
+                requested_by=user.mention(),
+                song_name=info["title"],
+                song_url=info["original_url"],
+                time_taken=song_upload_finish_time,
+            ),
+            reply_markup=InlineKeyboardMarkup(
+                inline_keyboard=[
+                    [
+                        InlineKeyboardButton(
+                            text="Song",
+                            url=dumped_song.link,
+                        )
+                    ]
                 ]
-            ]
-        ),
-    )
+            ),
+        )
 
     os.remove(final_song_path)
     os.remove(thumb_path)

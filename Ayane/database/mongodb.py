@@ -43,7 +43,13 @@ async def check_song(_id):
     return await INDEX.get({"_id": _id})
 
 
-async def song_title_matching(query: str):
+async def song_title_matching(query: str, offset: int = 0):
+    total_songs = await DB.INDEX.estimated_document_count()
+    next_offset = offset + 20
+
+    if next_offset > total_songs:
+        next_offset = ""
+
     pipeline = [
         {
             "$search": {
@@ -51,10 +57,11 @@ async def song_title_matching(query: str):
                 "text": {"query": query, "path": ["title", "artist"]},
             },
         },
-        {"$limit": 50},
+        {"$skip": offset},
+        {"$limit": 20},
     ]
     async for doc in DB.INDEX.aggregate(pipeline):
-        yield doc
+        yield doc, next_offset
 
 
 async def initial_search_result():
