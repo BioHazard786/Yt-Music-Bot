@@ -204,6 +204,7 @@ async def yt_music_playlist_dl_helper(url: str, reply: Message, user: User):
                 song_count=info["playlist_count"],
                 time_taken=playlist_upload_finish_time,
             ),
+            disable_web_page_preview=True,
         )
         os.remove(playlist_thumbnail)
 

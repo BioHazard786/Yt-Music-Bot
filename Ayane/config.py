@@ -27,25 +27,25 @@ REGEX_PT = r"(youtu.*be.*)\/(watch\?v=|embed\/|v|shorts|)(.*?((?=[&#?])|$))"
 YT_THUMB_LINK = "https://i.ytimg.com/vi/{id}/mqdefault.jpg"
 
 CAPTION = """
-<b>Title</b> - <code>{title}</code>
+<b>𝗧𝗶𝘁𝗹𝗲</b> - <code>{title}</code>
 <b>Artist</b> - <code>{artist}</code>
 """
 
 STATUS = """
-<b>➜ Title : </b><code>{title}</code>
-<b>➜ Status : </b><code>{status}</code>
+<b>➜ 𝗧𝗶𝘁𝗹𝗲 : </b><code>{title}</code>
+<b>➜ 𝗦𝘁𝗮𝘁𝘂𝘀 : </b><code>{status}</code>
 """
 
 PLAYLIST_UPLOADED = """
-<b>➜ Status : </b><code>{playlist} has been uploaded -</code> {mention}
-<b>➜ Total : </b><code>{song_num} Songs</code>
-<b>➜ Playlist Duration : </b><code>{duration}</code>
-<b>➜ Time Taken : </b><code>{time}</code>
+<b>➜ 𝗦𝘁𝗮𝘁𝘂𝘀 : </b><code>{playlist} has been uploaded -</code> {mention}
+<b>➜ 𝗧𝗼𝘁𝗮𝗹 : </b><code>{song_num} Songs</code>
+<b>➜ 𝗣𝗹𝗮𝘆𝗹𝗶𝘀𝘁 𝗗𝘂𝗿𝗮𝘁𝗶𝗼𝗻 : </b><code>{duration}</code>
+<b>➜ 𝗧𝗶𝗺𝗲 𝗧𝗮𝗸𝗲𝗻 : </b><code>{time}</code>
 """
 
 SONG_UPLOADED = """
-<b>➜ Status : </b><code>{song} has been uploaded -</code> {mention}
-<b>➜ Time Taken : </b><code>{time}</code>
+<b>➜ 𝗦𝘁𝗮𝘁𝘂𝘀 : </b><code>{song} has been uploaded -</code> {mention}
+<b>➜ 𝗧𝗶𝗺𝗲 𝗧𝗮𝗸𝗲𝗻 : </b><code>{time}</code>
 """
 
 LOG_CHANNEL_MESSAGE = """

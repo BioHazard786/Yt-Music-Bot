@@ -107,6 +107,7 @@ async def song_upload(
                 song_url=info["original_url"],
                 time_taken=song_upload_finish_time,
             ),
+            disable_web_page_preview=True,
             reply_markup=InlineKeyboardMarkup(
                 inline_keyboard=[
                     [
