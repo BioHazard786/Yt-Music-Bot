@@ -187,9 +187,9 @@ async def yt_music_playlist_dl_helper(url: str, reply: Message, user: User):
         playlist_upload_finish_time = get_readable_time(
             time() - playlist_upload_start_time
         )
-        await reply.reply_photo(
+        await bot.send_photo(
+            chat_id=reply.chat.id,
             photo=playlist_thumbnail,
-            quote=True,
             caption=PLAYLIST_UPLOADED.format(
                 song_num=info["playlist_count"],
                 time=playlist_upload_finish_time,
@@ -198,6 +198,7 @@ async def yt_music_playlist_dl_helper(url: str, reply: Message, user: User):
                 playlist=info["title"],
             ),
         )
+        await reply.delete()
         await bot.send_message(
             chat_id=TeleConf.LOG_CHANNEL,
             text=PLAYLIST_LOG_CHANNEL_MESSAGE.format(
