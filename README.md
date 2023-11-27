@@ -51,6 +51,8 @@
 
 - `DUMP_CHANNEL`: Create a Telegram Channel. Get its ID from [Rose](https://t.me/MissRose_bot)
 
+- `LOG_CHANNEL`: Create a Telegram Channel. Get its ID from [Rose](https://t.me/MissRose_bot)
+
 - `MONGODB`: MongoDB Connection URL. Get this value from [MondoDB](https://mongodb.com)
 
 #### Required Softwares
@@ -117,6 +119,7 @@ sudo docker stop id
 - [x] Metadata Embedded in music file with thumbnail
 - [x] Inline searching
 - [x] Dump Channel
+- [x] Log Channel
 - [x] Docker Support
 
 ## Built With

@@ -102,7 +102,7 @@ async def song_upload(
         await bot.send_message(
             chat_id=TeleConf.LOG_CHANNEL,
             text=LOG_CHANNEL_MESSAGE.format(
-                requested_by=user.mention(),
+                requested_by=user.mention,
                 song_name=info["title"],
                 song_url=info["original_url"],
                 time_taken=song_upload_finish_time,

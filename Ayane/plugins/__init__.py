@@ -15,6 +15,7 @@ from Ayane.helpers.utils import (
     ytdl_opts,
     extract_yt_id,
     playlist_duration,
+    playlist_thumbnail_url,
 )
 from Ayane.helpers.song_upload import song_upload
 from Ayane.helpers.thumbnail_downloader import dl_thumbnail_image

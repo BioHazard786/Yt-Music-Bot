@@ -1,7 +1,9 @@
 from .__init__ import *
 
 
-@bot.on_message(filters.regex(pattern=REGEX_PT) & ~filters.regex(pattern=r"/yt"))
+@bot.on_message(
+    filters.regex(pattern=REGEX_PT) & ~filters.regex(pattern=r"/yt") & filters.private
+)
 async def ytmusicdl(app, message):
     url = message.text
     await message_helper(url, message)
@@ -178,7 +180,9 @@ async def yt_music_playlist_dl_helper(url: str, reply: Message, user: User):
 
         playlist_thumbnail = await loop.run_in_executor(
             ThreadPoolExecutor(1),
-            lambda: dl_thumbnail_image(info["thumbnails"][0]["url"], user.id),
+            lambda: dl_thumbnail_image(
+                playlist_thumbnail_url(info["thumbnails"][0]["url"]), user.id
+            ),
         )
         playlist_upload_finish_time = get_readable_time(
             time() - playlist_upload_start_time
@@ -197,7 +201,7 @@ async def yt_music_playlist_dl_helper(url: str, reply: Message, user: User):
         await bot.send_message(
             chat_id=TeleConf.LOG_CHANNEL,
             text=PLAYLIST_LOG_CHANNEL_MESSAGE.format(
-                requested_by=user.mention(),
+                requested_by=user.mention,
                 playlist_name=info["title"],
                 playlist_url=info["original_url"],
                 duration=playlist_duration(info["entries"]),
