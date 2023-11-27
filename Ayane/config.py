@@ -11,16 +11,16 @@ botStartTime = time()
 
 
 class TeleConf(object):
-    BOT_TOKEN = getenv("BOT_TOKEN")
+    BOT_TOKEN = str(getenv("BOT_TOKEN"))
     API_ID = int(getenv("API_ID"))
-    API_HASH = getenv("API_HASH")
+    API_HASH = str(getenv("API_HASH"))
     DUMP_CHANNEL = int(getenv("DUMP_CHANNEL"))
     LOG_CHANNEL = int(getenv("LOG_CHANNEL"))
 
 
 class MongoConf(object):
-    MONGODB = getenv("MONGODB")
-    DB_NAME = getenv("DB_NAME", "MusicDump")
+    MONGODB = str(getenv("MONGODB"))
+    DB_NAME = str(getenv("DB_NAME", "MusicDump"))
 
 
 REGEX_PT = r"(youtu.*be.*)\/(watch\?v=|embed\/|v|shorts|)(.*?((?=[&#?])|$))"
@@ -49,9 +49,9 @@ SONG_UPLOADED = """
 """
 
 LOG_CHANNEL_MESSAGE = """
-<b>➜ 𝗥𝗲𝗾𝘂𝗲𝘀𝘁𝗲𝗱 𝗕𝘆 : </b>{requested_by}
+<b>➜ 𝗥𝗲𝗾𝘂𝗲𝘀𝘁𝗲𝗱 𝗕𝘆 : <i>{requested_by}</i></b>
 
-<b>➜ 𝗦𝗼𝗻𝗴 𝗡𝗮𝗺𝗲 : </b><i>{song_name}</i>
+<b>➜ 𝗦𝗼𝗻𝗴 𝗡𝗮𝗺𝗲 : <i>{song_name}</i></b>
 
 <b>➜ 𝗦𝗼𝗻𝗴 𝗨𝗿𝗹 : </b><i>{song_url}</i>
 
@@ -59,9 +59,9 @@ LOG_CHANNEL_MESSAGE = """
 """
 
 PLAYLIST_LOG_CHANNEL_MESSAGE = """
-<b>➜ 𝗥𝗲𝗾𝘂𝗲𝘀𝘁𝗲𝗱 𝗕𝘆 : </b>{requested_by}
+<b>➜ 𝗥𝗲𝗾𝘂𝗲𝘀𝘁𝗲𝗱 𝗕𝘆 : <i>{requested_by}</i></b>
 
-<b>➜ 𝗣𝗹𝗮𝘆𝗹𝗶𝘀𝘁 𝗡𝗮𝗺𝗲 : </b><i>{playlist_name}</i>
+<b>➜ 𝗣𝗹𝗮𝘆𝗹𝗶𝘀𝘁 𝗡𝗮𝗺𝗲 : <i>{playlist_name}</i></b>
 
 <b>➜ 𝗣𝗹𝗮𝘆𝗹𝗶𝘀𝘁 𝗨𝗿𝗹 : </b><i>{playlist_url}</i>
 
