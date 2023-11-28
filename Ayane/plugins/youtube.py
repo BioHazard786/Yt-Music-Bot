@@ -2,8 +2,7 @@ from .__init__ import *
 
 
 @bot.on_message(
-    filters.regex(pattern=REGEX_PT) & ~filters.regex(
-        pattern=r"/yt") & filters.private
+    filters.regex(pattern=REGEX_PT) & ~filters.regex(pattern=r"/yt") & filters.private
 )
 async def ytmusicdl(app, message):
     url = message.text
@@ -51,7 +50,11 @@ async def message_helper(url: str, message: Message):
 
 
 async def yt_music_dl_helper(
-    url: str, reply: Message | CallbackQuery, user: User, playlist: bool = False, song_info: dict = None
+    url: str,
+    reply: Message | CallbackQuery,
+    user: User,
+    playlist: bool = False,
+    song_info: dict = None,
 ):
     try:
         yt_id = extract_yt_id(url)
@@ -74,8 +77,10 @@ async def yt_music_dl_helper(
             return await reply.edit_message_media(
                 InputMediaAudio(
                     media=saved_song["file_id"],
-                    caption=f"<b>Your Song has been Uploaded -</b> {
-                        user.mention}",
+                    caption=CAPTION.format(
+                        title=saved_song["title"], artist=saved_song["artist"]
+                    )
+                    + f"\n<b>𝗬𝗼𝘂𝗿 𝗦𝗼𝗻𝗴 𝗵𝗮𝘀 𝗯𝗲𝗲𝗻 𝗨𝗽𝗹𝗼𝗮𝗱𝗲𝗱 - </b>{user.mention}",
                 )
             )
     else:
@@ -94,8 +99,7 @@ async def yt_music_dl_helper(
                 InputMediaPhoto(
                     media=choice(ICONS),
                     caption=STATUS.format(
-                        title=f"{saved_song['title']} - {saved_song['artist']} ({song_info.get(
-                            'current_song')}/{song_info.get('total_songs')})",
+                        title=f"{saved_song['title']} - {saved_song['artist']} ({song_info.get('current_song')}/{song_info.get('total_songs')})",
                         status="Found...✅",
                     ),
                 )
@@ -117,8 +121,7 @@ async def yt_music_dl_helper(
         InputMediaPhoto(
             media=choice(ICONS),
             caption=STATUS.format(
-                title=f'{song_info.get("title")} ({song_info.get(
-                    "current_song")}/{song_info.get("total_songs")})'
+                title=f'{song_info.get("title")} ({song_info.get("current_song")}/{song_info.get("total_songs")})'
                 if playlist
                 else f"Song ({yt_id})",
                 status="Downloading...📥",
@@ -156,8 +159,7 @@ async def yt_music_dl_helper(
             InputMediaPhoto(
                 media=YT_THUMB_LINK.format(id=info["id"]),
                 caption=STATUS.format(
-                    title=f'{song_info.get("title")} ({song_info.get(
-                        "current_song")}/{song_info.get("total_songs")})'
+                    title=f'{song_info.get("title")} ({song_info.get("current_song")}/{song_info.get("total_songs")})'
                     if playlist
                     else info["title"],
                     status="Uploading...📤",

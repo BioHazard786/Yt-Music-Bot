@@ -30,10 +30,12 @@ async def inlineSearch(client: Client, query: InlineQuery):
                 for result in search_results:
                     buttons = [
                         InlineKeyboardButton(
-                            text="📥 𝗗𝗼𝘄𝗻𝗹𝗼𝗮𝗱", callback_data=f"d|{query.from_user.id}|{result['videoId']}"
+                            text="📥 𝗗𝗼𝘄𝗻𝗹𝗼𝗮𝗱",
+                            callback_data=f"d|{query.from_user.id}|{result['videoId']},",
                         ),
                         InlineKeyboardButton(
-                            text="🔎 𝗦𝗲𝗮𝗿𝗰𝗵 𝗔𝗴𝗮𝗶𝗻", switch_inline_query_current_chat=".online "
+                            text="🔎 𝗦𝗲𝗮𝗿𝗰𝗵 𝗔𝗴𝗮𝗶𝗻",
+                            switch_inline_query_current_chat=".online ",
                         ),
                     ]
                     markup = InlineKeyboardMarkup([buttons])
@@ -41,12 +43,10 @@ async def inlineSearch(client: Client, query: InlineQuery):
                         artist = ", ".join(
                             list(map(lambda a: a["name"], result["artists"]))
                         )
-                        duration = get_readable_time(
-                            result["duration_seconds"])
+                        duration = get_readable_time(result["duration_seconds"])
                         results.append(
                             InlineQueryResultPhoto(
-                                photo_url=YT_THUMB_LINK.format(
-                                    id=result["videoId"]),
+                                photo_url=YT_THUMB_LINK.format(id=result["videoId"]),
                                 title=result["title"],
                                 description=f"{artist} | {duration}",
                                 reply_markup=markup,
@@ -69,9 +69,16 @@ async def inlineSearch(client: Client, query: InlineQuery):
                             input_message_content=InputTextMessageContent(
                                 message_text="𝗖𝗹𝗶𝗰𝗸 𝘁𝗵𝗲 𝗯𝘂𝘁𝘁𝗼𝗻 𝗯𝗲𝗹𝗼𝘄 𝘁𝗼 𝘀𝗲𝗮𝗿𝗰𝗵 𝗳𝗼𝗿 𝘀𝗼𝗻𝗴𝘀 𝘃𝗶𝗮 𝗶𝗻𝗹𝗶𝗻𝗲.",
                             ),
-                            reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton(
-                                text="𝗖𝗹𝗶𝗰𝗸 𝗛𝗲𝗿𝗲", switch_inline_query_current_chat=".online Starboy"
-                            )]])
+                            reply_markup=InlineKeyboardMarkup(
+                                [
+                                    [
+                                        InlineKeyboardButton(
+                                            text="""𝗖𝗹𝗶𝗰𝗸 𝗛𝗲𝗿𝗲""",
+                                            switch_inline_query_current_chat=".online Starboy",
+                                        )
+                                    ]
+                                ]
+                            ),
                         )
                     ]
                 )
@@ -85,11 +92,18 @@ async def inlineSearch(client: Client, query: InlineQuery):
                 input_message_content=InputTextMessageContent(
                     message_text="𝗖𝗹𝗶𝗰𝗸 𝘁𝗵𝗲 𝗯𝘂𝘁𝘁𝗼𝗻 𝗯𝗲𝗹𝗼𝘄 𝘁𝗼 𝘀𝗲𝗮𝗿𝗰𝗵 𝗳𝗼𝗿 𝘀𝗼𝗻𝗴𝘀 𝘃𝗶𝗮 𝗶𝗻𝗹𝗶𝗻𝗲.",
                 ),
-                reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton(
-                    text="𝗖𝗹𝗶𝗰𝗸 𝗛𝗲𝗿𝗲", switch_inline_query_current_chat=".online Starboy"
-                )]])
-            )
-        )
+                reply_markup=InlineKeyboardMarkup(
+                    [
+                        [
+                            InlineKeyboardButton(
+                                text="""𝗖𝗹𝗶𝗰𝗸 𝗛𝗲𝗿𝗲""",
+                                switch_inline_query_current_chat=".online Starboy",
+                            )
+                        ]
+                    ]
+                ),
+            ),
+        ),
         async for result in initial_search_result():
             if result:
                 results.append(
@@ -103,7 +117,7 @@ async def inlineSearch(client: Client, query: InlineQuery):
 
 @bot.on_callback_query(filters.create(lambda _, __, query: query.data.startswith("d|")))
 async def song_download(client: Client, query: CallbackQuery):
-    _, user_id, video_id = query.data.split('|')
+    _, user_id, video_id = query.data.split("|")
     url = f"https://youtu.be/{video_id}"
     if query.from_user.id != int(user_id):
         return await query.answer("Not Allowed...❎")

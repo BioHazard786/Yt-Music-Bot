@@ -5,7 +5,7 @@ from pyrogram.types import (
     InputMediaPhoto,
     InlineKeyboardButton,
     InlineKeyboardMarkup,
-    CallbackQuery
+    CallbackQuery,
 )
 from urllib.parse import urlparse, parse_qs
 from Ayane.config import (
@@ -16,6 +16,7 @@ from Ayane.config import (
     SONG_UPLOADED,
     LOG_CHANNEL_MESSAGE,
     YT_THUMB_LINK,
+    INLINE_SONG_UPLOADED,
 )
 from Ayane.database.mongodb import save_song_to_db
 from random import choice

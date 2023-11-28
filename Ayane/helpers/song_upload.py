@@ -5,7 +5,6 @@ from Ayane.helpers.utils import get_readable_time
 async def song_upload(
     reply, info, user, song_path, song_upload_start_time, playlist=False
 ):
-    NOT_UPLOADED = f"<b>{info['title']} Not Uploaded -</b> {user.mention()}"
     artist = (
         info.get("artist")
         if info.get("artist")
@@ -25,7 +24,7 @@ async def song_upload(
             return await reply.edit_message_media(
                 InputMediaPhoto(
                     media=choice(ICONS),
-                    caption=NOT_UPLOADED,
+                    caption=f"<b>{info['title']} 𝗡𝗼𝘁 𝗨𝗽𝗹𝗼𝗮𝗱𝗲𝗱 -</b> {user.mention()}",
                 ),
             )
 
@@ -33,7 +32,7 @@ async def song_upload(
             return await bot.send_photo(
                 chat_id=reply.chat.id,
                 photo=choice(ICONS),
-                caption=NOT_UPLOADED,
+                caption=f"<b>{info['title']} 𝗡𝗼𝘁 𝗨𝗽𝗹𝗼𝗮𝗱𝗲𝗱 -</b> {user.mention()}",
             )
 
     final_song_path = final_song_path[0]
@@ -55,20 +54,30 @@ async def song_upload(
             return await reply.edit_message_media(
                 InputMediaPhoto(
                     media=choice(ICONS),
-                    caption=NOT_UPLOADED,
+                    caption=f"<b>{info['title']} 𝗡𝗼𝘁 𝗨𝗽𝗹𝗼𝗮𝗱𝗲𝗱 -</b> {user.mention()}",
                 ),
             )
 
-        song_upload_finish_time = get_readable_time(
-            time() - song_upload_start_time)
+        song_upload_finish_time = get_readable_time(time() - song_upload_start_time)
+        await asyncio.sleep(3)
         if not isinstance(reply, CallbackQuery):
-            await asyncio.sleep(3)
             await song.reply_photo(
                 photo=thumb_path,
                 quote=True,
                 caption=SONG_UPLOADED.format(
-                    song=info["title"], time=song_upload_finish_time, mention=user.mention
+                    song=info["title"],
+                    time=song_upload_finish_time,
+                    mention=user.mention,
                 ),
+            )
+        else:
+            await reply.edit_message_caption(
+                caption=INLINE_SONG_UPLOADED.format(
+                    title=info["title"],
+                    artist=artist,
+                    time=song_upload_finish_time,
+                    mention=user.mention,
+                )
             )
 
     else:
@@ -86,7 +95,7 @@ async def song_upload(
             return await bot.send_photo(
                 chat_id=reply.chat.id,
                 photo=choice(ICONS),
-                caption=NOT_UPLOADED,
+                caption=f"<b>{info['title']} 𝗡𝗼𝘁 𝗨𝗽𝗹𝗼𝗮𝗱𝗲𝗱 -</b> {user.mention()}",
             )
 
     if not isinstance(reply, CallbackQuery):

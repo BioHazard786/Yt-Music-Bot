@@ -56,8 +56,15 @@ SONG_UPLOADED = """
 <b>➜ 𝗧𝗶𝗺𝗲 𝗧𝗮𝗸𝗲𝗻 : </b><code>{time}</code>
 """
 
+INLINE_SONG_UPLOADED = """
+<b>𝗧𝗶𝘁𝗹𝗲</b> - <code>{title}</code>
+<b>𝗔𝗿𝘁𝗶𝘀𝘁</b> - <code>{artist}</code>
+<b>𝗧𝗶𝗺𝗲 𝗧𝗮𝗸𝗲𝗻</b> - <code>{time}</code>
+<b>𝗬𝗼𝘂𝗿 𝗦𝗼𝗻𝗴 𝗵𝗮𝘀 𝗯𝗲𝗲𝗻 𝗨𝗽𝗹𝗼𝗮𝗱𝗲𝗱</b> - {mention}
+"""
+
 LOG_CHANNEL_MESSAGE = """
-<>➜ 𝗥𝗲𝗾𝘂𝗲𝘀𝘁𝗲𝗱 𝗕𝘆 : {requested_by}
+<b>➜ 𝗥𝗲𝗾𝘂𝗲𝘀𝘁𝗲𝗱 𝗕𝘆 : </b>{requested_by}
 
 <b>➜ 𝗦𝗼𝗻𝗴 𝗡𝗮𝗺𝗲 : <i>{song_name}</i></b>
 
@@ -67,7 +74,7 @@ LOG_CHANNEL_MESSAGE = """
 """
 
 PLAYLIST_LOG_CHANNEL_MESSAGE = """
-<>➜ 𝗥𝗲𝗾𝘂𝗲𝘀𝘁𝗲𝗱 𝗕𝘆 : {requested_by}
+<b>➜ 𝗥𝗲𝗾𝘂𝗲𝘀𝘁𝗲𝗱 𝗕𝘆 : </b>{requested_by}
 
 <b>➜ 𝗣𝗹𝗮𝘆𝗹𝗶𝘀𝘁 𝗡𝗮𝗺𝗲 : <i>{playlist_name}</i></b>
 
