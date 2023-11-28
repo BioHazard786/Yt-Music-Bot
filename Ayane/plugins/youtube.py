@@ -81,7 +81,7 @@ async def yt_music_dl_helper(
                         caption=CAPTION.format(
                             title=saved_song["title"], artist=saved_song["artist"]
                         )
-                        + f"\n<b>𝗬𝗼𝘂𝗿 𝗦𝗼𝗻𝗴 𝗵𝗮𝘀 𝗯𝗲𝗲𝗻 𝗨𝗽𝗹𝗼𝗮𝗱𝗲𝗱 - </b>{user.mention}",
+                        + f"\n𝗬𝗼𝘂𝗿 𝗦𝗼𝗻𝗴 𝗵𝗮𝘀 𝗯𝗲𝗲𝗻 𝗨𝗽𝗹𝗼𝗮𝗱𝗲𝗱 - {user.mention}",
                     )
                 )
             else:
@@ -91,7 +91,7 @@ async def yt_music_dl_helper(
                         caption=CAPTION.format(
                             title=saved_song["title"], artist=saved_song["artist"]
                         )
-                        + f"\n<b>𝗬𝗼𝘂𝗿 𝗦𝗼𝗻𝗴 𝗵𝗮𝘀 𝗯𝗲𝗲𝗻 𝗨𝗽𝗹𝗼𝗮𝗱𝗲𝗱 - </b>{user.mention}",
+                        + f"\n𝗬𝗼𝘂𝗿 𝗦𝗼𝗻𝗴 𝗵𝗮𝘀 𝗯𝗲𝗲𝗻 𝗨𝗽𝗹𝗼𝗮𝗱𝗲𝗱 - {user.mention}",
                     )
                 )
     else:

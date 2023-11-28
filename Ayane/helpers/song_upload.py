@@ -25,14 +25,14 @@ async def song_upload(
                 return await reply.edit_media(
                     InputMediaPhoto(
                         media=choice(ICONS),
-                        caption=f"<b>{info['title']} 𝗡𝗼𝘁 𝗨𝗽𝗹𝗼𝗮𝗱𝗲𝗱 -</b> {user.mention()}",
+                        caption=f"{info['title']} 𝗡𝗼𝘁 𝗨𝗽𝗹𝗼𝗮𝗱𝗲𝗱 - {user.mention()}",
                     ),
                 )
             else:
                 return await reply.edit_message_media(
                     InputMediaPhoto(
                         media=choice(ICONS),
-                        caption=f"<b>{info['title']} 𝗡𝗼𝘁 𝗨𝗽𝗹𝗼𝗮𝗱𝗲𝗱 -</b> {user.mention()}",
+                        caption=f"{info['title']} 𝗡𝗼𝘁 𝗨𝗽𝗹𝗼𝗮𝗱𝗲𝗱 - {user.mention()}",
                     ),
                 )
 
@@ -40,7 +40,7 @@ async def song_upload(
             return await bot.send_photo(
                 chat_id=reply.chat.id,
                 photo=choice(ICONS),
-                caption=f"<b>{info['title']} 𝗡𝗼𝘁 𝗨𝗽𝗹𝗼𝗮𝗱𝗲𝗱 -</b> {user.mention()}",
+                caption=f"{info['title']} 𝗡𝗼𝘁 𝗨𝗽𝗹𝗼𝗮𝗱𝗲𝗱 - {user.mention()}",
             )
 
     final_song_path = final_song_path[0]
@@ -75,14 +75,14 @@ async def song_upload(
                 return await reply.edit_media(
                     InputMediaPhoto(
                         media=choice(ICONS),
-                        caption=f"<b>{info['title']} 𝗡𝗼𝘁 𝗨𝗽𝗹𝗼𝗮𝗱𝗲𝗱 -</b> {user.mention()}",
+                        caption=f"{info['title']} 𝗡𝗼𝘁 𝗨𝗽𝗹𝗼𝗮𝗱𝗲𝗱 - {user.mention()}",
                     ),
                 )
             else:
                 return await reply.edit_message_media(
                     InputMediaPhoto(
                         media=choice(ICONS),
-                        caption=f"<b>{info['title']} 𝗡𝗼𝘁 𝗨𝗽𝗹𝗼𝗮𝗱𝗲𝗱 -</b> {user.mention()}",
+                        caption=f"{info['title']} 𝗡𝗼𝘁 𝗨𝗽𝗹𝗼𝗮𝗱𝗲𝗱 - {user.mention()}",
                     ),
                 )
 
@@ -123,7 +123,7 @@ async def song_upload(
             return await bot.send_photo(
                 chat_id=reply.chat.id,
                 photo=choice(ICONS),
-                caption=f"<b>{info['title']} 𝗡𝗼𝘁 𝗨𝗽𝗹𝗼𝗮𝗱𝗲𝗱 -</b> {user.mention()}",
+                caption=f"{info['title']} 𝗡𝗼𝘁 𝗨𝗽𝗹𝗼𝗮𝗱𝗲𝗱 - {user.mention()}",
             )
 
     if not isinstance(reply, CallbackQuery):

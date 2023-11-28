@@ -29,62 +29,62 @@ YT_THUMB_LINK = "https://i.ytimg.com/vi/{id}/mqdefault.jpg"
 YT_MUSIC = YTMusic()
 
 CAPTION = """
-<b>𝗧𝗶𝘁𝗹𝗲</b> - <code>{title}</code>
-<b>𝗔𝗿𝘁𝗶𝘀𝘁</b> - <code>{artist}</code>
+𝗧𝗶𝘁𝗹𝗲< - <code>{title}</code>
+𝗔𝗿𝘁𝗶𝘀𝘁< - <code>{artist}</code>
 """
 
 SEARCH_RESULT = """
-<b>➜ 𝗧𝗶𝘁𝗹𝗲 : </b><code>{title}</code>
-<b>➜ 𝗔𝗿𝘁𝗶𝘀𝘁 : </b><code>{artist}</code>
-<b>➜ 𝗗𝘂𝗿𝗮𝘁𝗶𝗼𝗻 : </b><code>{duration}</code>
+➜ 𝗧𝗶𝘁𝗹𝗲 : <code>{title}</code>
+➜ 𝗔𝗿𝘁𝗶𝘀𝘁 : <code>{artist}</code>
+➜ 𝗗𝘂𝗿𝗮𝘁𝗶𝗼𝗻 : <code>{duration}</code>
 """
 
 STATUS = """
-<b>➜ 𝗧𝗶𝘁𝗹𝗲 : </b><code>{title}</code>
-<b>➜ 𝗦𝘁𝗮𝘁𝘂𝘀 : </b><code>{status}</code>
+➜ 𝗧𝗶𝘁𝗹𝗲 : <code>{title}</code>
+➜ 𝗦𝘁𝗮𝘁𝘂𝘀 : <code>{status}</code>
 """
 
 PLAYLIST_UPLOADED = """
-<b>➜ 𝗦𝘁𝗮𝘁𝘂𝘀 : </b><code>{playlist} has been uploaded -</code> {mention}
-<b>➜ 𝗧𝗼𝘁𝗮𝗹 : </b><code>{song_num} Songs</code>
-<b>➜ 𝗣𝗹𝗮𝘆𝗹𝗶𝘀𝘁 𝗗𝘂𝗿𝗮𝘁𝗶𝗼𝗻 : </b><code>{duration}</code>
-<b>➜ 𝗧𝗶𝗺𝗲 𝗧𝗮𝗸𝗲𝗻 : </b><code>{time}</code>
+➜ 𝗦𝘁𝗮𝘁𝘂𝘀 : <code>{playlist} has been uploaded -</code> {mention}
+➜ 𝗧𝗼𝘁𝗮𝗹 : <code>{song_num} Songs</code>
+➜ 𝗣𝗹𝗮𝘆𝗹𝗶𝘀𝘁 𝗗𝘂𝗿𝗮𝘁𝗶𝗼𝗻 : <code>{duration}</code>
+➜ 𝗧𝗶𝗺𝗲 𝗧𝗮𝗸𝗲𝗻 : <code>{time}</code>
 """
 
 SONG_UPLOADED = """
-<b>➜ 𝗦𝘁𝗮𝘁𝘂𝘀 : </b><code>{song} has been uploaded -</code> {mention}
-<b>➜ 𝗧𝗶𝗺𝗲 𝗧𝗮𝗸𝗲𝗻 : </b><code>{time}</code>
+➜ 𝗦𝘁𝗮𝘁𝘂𝘀 : <code>{song} has been uploaded -</code> {mention}
+➜ 𝗧𝗶𝗺𝗲 𝗧𝗮𝗸𝗲𝗻 : <code>{time}</code>
 """
 
 INLINE_SONG_UPLOADED = """
-<b>𝗧𝗶𝘁𝗹𝗲</b> - <code>{title}</code>
-<b>𝗔𝗿𝘁𝗶𝘀𝘁</b> - <code>{artist}</code>
-<b>𝗧𝗶𝗺𝗲 𝗧𝗮𝗸𝗲𝗻</b> - <code>{time}</code>
-<b>𝗬𝗼𝘂𝗿 𝗦𝗼𝗻𝗴 𝗵𝗮𝘀 𝗯𝗲𝗲𝗻 𝗨𝗽𝗹𝗼𝗮𝗱𝗲𝗱</b> - {mention}
+𝗧𝗶𝘁𝗹𝗲 - <code>{title}</code>
+𝗔𝗿𝘁𝗶𝘀𝘁 - <code>{artist}</code>
+𝗧𝗶𝗺𝗲 𝗧𝗮𝗸𝗲𝗻 - <code>{time}</code>
+𝗬𝗼𝘂𝗿 𝗦𝗼𝗻𝗴 𝗵𝗮𝘀 𝗯𝗲𝗲𝗻 𝗨𝗽𝗹𝗼𝗮𝗱𝗲𝗱 - {mention}
 """
 
 LOG_CHANNEL_MESSAGE = """
-<b>➜ 𝗥𝗲𝗾𝘂𝗲𝘀𝘁𝗲𝗱 𝗕𝘆 : </b>{requested_by}
+➜ 𝗥𝗲𝗾𝘂𝗲𝘀𝘁𝗲𝗱 𝗕𝘆 : {requested_by}
 
-<b>➜ 𝗦𝗼𝗻𝗴 𝗡𝗮𝗺𝗲 : <i>{song_name}</i></b>
+➜ 𝗦𝗼𝗻𝗴 𝗡𝗮𝗺𝗲 : <b><i>{song_name}</i></b>
 
-<b>➜ 𝗦𝗼𝗻𝗴 𝗨𝗿𝗹 : </b><i>{song_url}</i>
+➜ 𝗦𝗼𝗻𝗴 𝗨𝗿𝗹 : <i>{song_url}</i>
 
-<b>➜ 𝗧𝗶𝗺𝗲 𝗧𝗮𝗸𝗲𝗻 : </b><i>{time_taken}</i>
+➜ 𝗧𝗶𝗺𝗲 𝗧𝗮𝗸𝗲𝗻 : <i>{time_taken}</i>
 """
 
 PLAYLIST_LOG_CHANNEL_MESSAGE = """
-<b>➜ 𝗥𝗲𝗾𝘂𝗲𝘀𝘁𝗲𝗱 𝗕𝘆 : </b>{requested_by}
+➜ 𝗥𝗲𝗾𝘂𝗲𝘀𝘁𝗲𝗱 𝗕𝘆 : {requested_by}
 
-<b>➜ 𝗣𝗹𝗮𝘆𝗹𝗶𝘀𝘁 𝗡𝗮𝗺𝗲 : <i>{playlist_name}</i></b>
+➜ 𝗣𝗹𝗮𝘆𝗹𝗶𝘀𝘁 𝗡𝗮𝗺𝗲 : <b><i>{playlist_name}</i></b>
 
-<b>➜ 𝗣𝗹𝗮𝘆𝗹𝗶𝘀𝘁 𝗨𝗿𝗹 : </b><i>{playlist_url}</i>
+➜ 𝗣𝗹𝗮𝘆𝗹𝗶𝘀𝘁 𝗨𝗿𝗹 : <i>{playlist_url}</i>
 
-<b>➜ 𝗣𝗹𝗮𝘆𝗹𝗶𝘀𝘁 𝗗𝘂𝗿𝗮𝘁𝗶𝗼𝗻 : </b><i>{duration}</i>
+➜ 𝗣𝗹𝗮𝘆𝗹𝗶𝘀𝘁 𝗗𝘂𝗿𝗮𝘁𝗶𝗼𝗻 : <i>{duration}</i>
 
-<b>➜ 𝗦𝗼𝗻𝗴 𝗖𝗼𝘂𝗻𝘁 : </b><i>{song_count}</i>
+➜ 𝗦𝗼𝗻𝗴 𝗖𝗼𝘂𝗻𝘁 : <i>{song_count}</i>
 
-<b>➜ 𝗧𝗶𝗺𝗲 𝗧𝗮𝗸𝗲𝗻 : </b><i>{time_taken}</i>
+➜ 𝗧𝗶𝗺𝗲 𝗧𝗮𝗸𝗲𝗻 : <i>{time_taken}</i>
 """
 
 HELP = f"""
