@@ -74,15 +74,26 @@ async def yt_music_dl_helper(
                 )
             )
         if saved_song := await check_song(yt_id):
-            return await reply.edit_message_media(
-                InputMediaAudio(
-                    media=saved_song["file_id"],
-                    caption=CAPTION.format(
-                        title=saved_song["title"], artist=saved_song["artist"]
+            if not isinstance(reply, CallbackQuery):
+                return await reply.edit_media(
+                    InputMediaAudio(
+                        media=saved_song["file_id"],
+                        caption=CAPTION.format(
+                            title=saved_song["title"], artist=saved_song["artist"]
+                        )
+                        + f"\n<b>𝗬𝗼𝘂𝗿 𝗦𝗼𝗻𝗴 𝗵𝗮𝘀 𝗯𝗲𝗲𝗻 𝗨𝗽𝗹𝗼𝗮𝗱𝗲𝗱 - </b>{user.mention}",
                     )
-                    + f"\n<b>𝗬𝗼𝘂𝗿 𝗦𝗼𝗻𝗴 𝗵𝗮𝘀 𝗯𝗲𝗲𝗻 𝗨𝗽𝗹𝗼𝗮𝗱𝗲𝗱 - </b>{user.mention}",
                 )
-            )
+            else:
+                return await reply.edit_message_media(
+                    InputMediaAudio(
+                        media=saved_song["file_id"],
+                        caption=CAPTION.format(
+                            title=saved_song["title"], artist=saved_song["artist"]
+                        )
+                        + f"\n<b>𝗬𝗼𝘂𝗿 𝗦𝗼𝗻𝗴 𝗵𝗮𝘀 𝗯𝗲𝗲𝗻 𝗨𝗽𝗹𝗼𝗮𝗱𝗲𝗱 - </b>{user.mention}",
+                    )
+                )
     else:
         await reply.edit_message_media(
             InputMediaPhoto(
@@ -117,17 +128,30 @@ async def yt_music_dl_helper(
     song_path = os.path.join(os.getcwd(), f"song_{user.id}")
 
     await asyncio.sleep(3)
-    await reply.edit_message_media(
-        InputMediaPhoto(
-            media=choice(ICONS),
-            caption=STATUS.format(
-                title=f'{song_info.get("title")} ({song_info.get("current_song")}/{song_info.get("total_songs")})'
-                if playlist
-                else f"Song ({yt_id})",
-                status="Downloading...📥",
-            ),
+    if not isinstance(reply, CallbackQuery):
+        await reply.edit_media(
+            InputMediaPhoto(
+                media=choice(ICONS),
+                caption=STATUS.format(
+                    title=f'{song_info.get("title")} ({song_info.get("current_song")}/{song_info.get("total_songs")})'
+                    if playlist
+                    else f"Song ({yt_id})",
+                    status="Downloading...📥",
+                ),
+            )
         )
-    )
+    else:
+        await reply.edit_message_media(
+            InputMediaPhoto(
+                media=choice(ICONS),
+                caption=STATUS.format(
+                    title=f'{song_info.get("title")} ({song_info.get("current_song")}/{song_info.get("total_songs")})'
+                    if playlist
+                    else f"Song ({yt_id})",
+                    status="Downloading...📥",
+                ),
+            )
+        )
 
     ydl_opts = ytdl_opts(song_path)
 
@@ -140,12 +164,20 @@ async def yt_music_dl_helper(
         except:
             pass
         if not playlist:
-            return await reply.edit_message_media(
-                InputMediaPhoto(
-                    media=choice(ICONS),
-                    caption=STATUS.format(title=url, status="Unavailable...❎"),
+            if not isinstance(reply, CallbackQuery):
+                return await reply.edit_media(
+                    InputMediaPhoto(
+                        media=choice(ICONS),
+                        caption=STATUS.format(title=url, status="Unavailable...❎"),
+                    )
                 )
-            )
+            else:
+                return await reply.edit_message_media(
+                    InputMediaPhoto(
+                        media=choice(ICONS),
+                        caption=STATUS.format(title=url, status="Unavailable...❎"),
+                    )
+                )
         else:
             return await bot.send_photo(
                 chat_id=reply.chat.id,
@@ -155,17 +187,30 @@ async def yt_music_dl_helper(
                 ),
             )
     try:
-        await reply.edit_message_media(
-            InputMediaPhoto(
-                media=YT_THUMB_LINK.format(id=info["id"]),
-                caption=STATUS.format(
-                    title=f'{song_info.get("title")} ({song_info.get("current_song")}/{song_info.get("total_songs")})'
-                    if playlist
-                    else info["title"],
-                    status="Uploading...📤",
-                ),
+        if not isinstance(reply, CallbackQuery):
+            await reply.edit_media(
+                InputMediaPhoto(
+                    media=YT_THUMB_LINK.format(id=info["id"]),
+                    caption=STATUS.format(
+                        title=f'{song_info.get("title")} ({song_info.get("current_song")}/{song_info.get("total_songs")})'
+                        if playlist
+                        else info["title"],
+                        status="Uploading...📤",
+                    ),
+                )
             )
-        )
+        else:
+            await reply.edit_message_media(
+                InputMediaPhoto(
+                    media=YT_THUMB_LINK.format(id=info["id"]),
+                    caption=STATUS.format(
+                        title=f'{song_info.get("title")} ({song_info.get("current_song")}/{song_info.get("total_songs")})'
+                        if playlist
+                        else info["title"],
+                        status="Uploading...📤",
+                    ),
+                )
+            )
     except Exception as e:
         print(str(e))
 

@@ -31,7 +31,7 @@ async def inlineSearch(client: Client, query: InlineQuery):
                     buttons = [
                         InlineKeyboardButton(
                             text="📥 𝗗𝗼𝘄𝗻𝗹𝗼𝗮𝗱",
-                            callback_data=f"d|{query.from_user.id}|{result['videoId']},",
+                            callback_data=f"d|{query.from_user.id}|{result['videoId']}",
                         ),
                         InlineKeyboardButton(
                             text="🔎 𝗦𝗲𝗮𝗿𝗰𝗵 𝗔𝗴𝗮𝗶𝗻",

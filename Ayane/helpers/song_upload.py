@@ -21,12 +21,20 @@ async def song_upload(
 
     if not final_song_path and not thumb_path:
         if not playlist:
-            return await reply.edit_message_media(
-                InputMediaPhoto(
-                    media=choice(ICONS),
-                    caption=f"<b>{info['title']} 𝗡𝗼𝘁 𝗨𝗽𝗹𝗼𝗮𝗱𝗲𝗱 -</b> {user.mention()}",
-                ),
-            )
+            if not isinstance(reply, CallbackQuery):
+                return await reply.edit_media(
+                    InputMediaPhoto(
+                        media=choice(ICONS),
+                        caption=f"<b>{info['title']} 𝗡𝗼𝘁 𝗨𝗽𝗹𝗼𝗮𝗱𝗲𝗱 -</b> {user.mention()}",
+                    ),
+                )
+            else:
+                return await reply.edit_message_media(
+                    InputMediaPhoto(
+                        media=choice(ICONS),
+                        caption=f"<b>{info['title']} 𝗡𝗼𝘁 𝗨𝗽𝗹𝗼𝗮𝗱𝗲𝗱 -</b> {user.mention()}",
+                    ),
+                )
 
         else:
             return await bot.send_photo(
@@ -40,23 +48,43 @@ async def song_upload(
 
     if not playlist:
         try:
-            song = await reply.edit_message_media(
-                InputMediaAudio(
-                    media=final_song_path,
-                    thumb=thumb_path,
-                    caption=caption,
-                    duration=info["duration"],
-                    performer=artist,
-                    title=info["title"],
+            if not isinstance(reply, CallbackQuery):
+                song = await reply.edit_media(
+                    InputMediaAudio(
+                        media=final_song_path,
+                        thumb=thumb_path,
+                        caption=caption,
+                        duration=info["duration"],
+                        performer=artist,
+                        title=info["title"],
+                    )
                 )
-            )
+            else:
+                song = await reply.edit_message_media(
+                    InputMediaAudio(
+                        media=final_song_path,
+                        thumb=thumb_path,
+                        caption=caption,
+                        duration=info["duration"],
+                        performer=artist,
+                        title=info["title"],
+                    )
+                )
         except:
-            return await reply.edit_message_media(
-                InputMediaPhoto(
-                    media=choice(ICONS),
-                    caption=f"<b>{info['title']} 𝗡𝗼𝘁 𝗨𝗽𝗹𝗼𝗮𝗱𝗲𝗱 -</b> {user.mention()}",
-                ),
-            )
+            if not isinstance(reply, CallbackQuery):
+                return await reply.edit_media(
+                    InputMediaPhoto(
+                        media=choice(ICONS),
+                        caption=f"<b>{info['title']} 𝗡𝗼𝘁 𝗨𝗽𝗹𝗼𝗮𝗱𝗲𝗱 -</b> {user.mention()}",
+                    ),
+                )
+            else:
+                return await reply.edit_message_media(
+                    InputMediaPhoto(
+                        media=choice(ICONS),
+                        caption=f"<b>{info['title']} 𝗡𝗼𝘁 𝗨𝗽𝗹𝗼𝗮𝗱𝗲𝗱 -</b> {user.mention()}",
+                    ),
+                )
 
         song_upload_finish_time = get_readable_time(time() - song_upload_start_time)
         await asyncio.sleep(3)
