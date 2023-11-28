@@ -95,7 +95,7 @@ async def yt_music_dl_helper(
                     )
                 )
     else:
-        await reply.edit_message_media(
+        await reply.edit_media(
             InputMediaPhoto(
                 media=choice(ICONS),
                 caption=STATUS.format(
@@ -106,7 +106,7 @@ async def yt_music_dl_helper(
 
         if saved_song := await check_song(yt_id):
             await asyncio.sleep(3)
-            await reply.edit_message_media(
+            await reply.edit_media(
                 InputMediaPhoto(
                     media=choice(ICONS),
                     caption=STATUS.format(
@@ -127,7 +127,7 @@ async def yt_music_dl_helper(
 
     song_path = os.path.join(os.getcwd(), f"song_{user.id}")
 
-    await asyncio.sleep(3)
+    # await asyncio.sleep(3)
     if not isinstance(reply, CallbackQuery):
         await reply.edit_media(
             InputMediaPhoto(
@@ -275,7 +275,7 @@ async def yt_music_playlist_dl_helper(url: str, reply: Message, user: User):
         os.remove(playlist_thumbnail)
 
     except Exception as e:
-        return await reply.edit_message_media(
+        return await reply.edit_media(
             InputMediaPhoto(
                 media=choice(ICONS),
                 caption=STATUS.format(title=str(e), status="Error...❌"),
