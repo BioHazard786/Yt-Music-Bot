@@ -29,8 +29,8 @@ YT_THUMB_LINK = "https://i.ytimg.com/vi/{id}/mqdefault.jpg"
 YT_MUSIC = YTMusic()
 
 CAPTION = """
-𝗧𝗶𝘁𝗹𝗲< - <code>{title}</code>
-𝗔𝗿𝘁𝗶𝘀𝘁< - <code>{artist}</code>
+𝗧𝗶𝘁𝗹𝗲 - <code>{title}</code>
+𝗔𝗿𝘁𝗶𝘀𝘁 - <code>{artist}</code>
 """
 
 SEARCH_RESULT = """
