@@ -2,7 +2,8 @@ from .__init__ import *
 
 
 @bot.on_message(
-    filters.regex(pattern=REGEX_PT) & ~filters.regex(pattern=r"/yt") & filters.private
+    filters.regex(pattern=REGEX_PT) & ~filters.regex(
+        pattern=r"/yt") & filters.private
 )
 async def ytmusicdl(app, message):
     url = message.text
@@ -50,7 +51,7 @@ async def message_helper(url: str, message: Message):
 
 
 async def yt_music_dl_helper(
-    url: str, reply: Message, user: User, playlist: bool = False, song_info: dict = None
+    url: str, reply: Message | CallbackQuery, user: User, playlist: bool = False, song_info: dict = None
 ):
     try:
         yt_id = extract_yt_id(url)
@@ -60,15 +61,25 @@ async def yt_music_dl_helper(
     song_upload_start_time = time()
 
     if not playlist:
+        if isinstance(reply, CallbackQuery):
+            await reply.edit_message_media(
+                InputMediaPhoto(
+                    media=choice(ICONS),
+                    caption=STATUS.format(
+                        title="Checking Song in Database", status="Checking...📝"
+                    ),
+                )
+            )
         if saved_song := await check_song(yt_id):
-            await reply.delete()
-            return await bot.send_cached_media(
-                chat_id=reply.chat.id,
-                file_id=saved_song["file_id"],
-                caption=f"<b>Your Song has been Uploaded -</b> {user.mention()}",
+            return await reply.edit_message_media(
+                InputMediaAudio(
+                    media=saved_song["file_id"],
+                    caption=f"<b>Your Song has been Uploaded -</b> {
+                        user.mention}",
+                )
             )
     else:
-        await reply.edit_media(
+        await reply.edit_message_media(
             InputMediaPhoto(
                 media=choice(ICONS),
                 caption=STATUS.format(
@@ -79,11 +90,12 @@ async def yt_music_dl_helper(
 
         if saved_song := await check_song(yt_id):
             await asyncio.sleep(3)
-            await reply.edit_media(
+            await reply.edit_message_media(
                 InputMediaPhoto(
                     media=choice(ICONS),
                     caption=STATUS.format(
-                        title=f"{saved_song['title']} - {saved_song['artist']} ({song_info.get('current_song')}/{song_info.get('total_songs')})",
+                        title=f"{saved_song['title']} - {saved_song['artist']} ({song_info.get(
+                            'current_song')}/{song_info.get('total_songs')})",
                         status="Found...✅",
                     ),
                 )
@@ -101,11 +113,12 @@ async def yt_music_dl_helper(
     song_path = os.path.join(os.getcwd(), f"song_{user.id}")
 
     await asyncio.sleep(3)
-    await reply.edit_media(
+    await reply.edit_message_media(
         InputMediaPhoto(
             media=choice(ICONS),
             caption=STATUS.format(
-                title=f'{song_info.get("title")} ({song_info.get("current_song")}/{song_info.get("total_songs")})'
+                title=f'{song_info.get("title")} ({song_info.get(
+                    "current_song")}/{song_info.get("total_songs")})'
                 if playlist
                 else f"Song ({yt_id})",
                 status="Downloading...📥",
@@ -124,7 +137,7 @@ async def yt_music_dl_helper(
         except:
             pass
         if not playlist:
-            return await reply.edit_media(
+            return await reply.edit_message_media(
                 InputMediaPhoto(
                     media=choice(ICONS),
                     caption=STATUS.format(title=url, status="Unavailable...❎"),
@@ -139,11 +152,12 @@ async def yt_music_dl_helper(
                 ),
             )
     try:
-        await reply.edit_media(
+        await reply.edit_message_media(
             InputMediaPhoto(
                 media=YT_THUMB_LINK.format(id=info["id"]),
                 caption=STATUS.format(
-                    title=f'{song_info.get("title")} ({song_info.get("current_song")}/{song_info.get("total_songs")})'
+                    title=f'{song_info.get("title")} ({song_info.get(
+                        "current_song")}/{song_info.get("total_songs")})'
                     if playlist
                     else info["title"],
                     status="Uploading...📤",
@@ -214,7 +228,7 @@ async def yt_music_playlist_dl_helper(url: str, reply: Message, user: User):
         os.remove(playlist_thumbnail)
 
     except Exception as e:
-        return await reply.edit_media(
+        return await reply.edit_message_media(
             InputMediaPhoto(
                 media=choice(ICONS),
                 caption=STATUS.format(title=str(e), status="Error...❌"),

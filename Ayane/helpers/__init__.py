@@ -5,6 +5,7 @@ from pyrogram.types import (
     InputMediaPhoto,
     InlineKeyboardButton,
     InlineKeyboardMarkup,
+    CallbackQuery
 )
 from urllib.parse import urlparse, parse_qs
 from Ayane.config import (

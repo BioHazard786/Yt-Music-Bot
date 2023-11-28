@@ -1,5 +1,5 @@
 from Ayane import bot, loop
-from pyrogram import Client, filters
+from pyrogram import Client, filters, enums
 from pyrogram.types import (
     Message,
     InputMediaAnimation,
@@ -7,6 +7,13 @@ from pyrogram.types import (
     InlineQueryResultCachedAudio,
     InlineQuery,
     User,
+    InlineQueryResultArticle,
+    InlineQueryResultPhoto,
+    InputTextMessageContent,
+    InlineKeyboardButton,
+    InlineKeyboardMarkup,
+    CallbackQuery,
+    InputMediaAudio
 )
 from Ayane.helpers.utils import (
     command_creator,
@@ -35,6 +42,8 @@ from Ayane.config import (
     CAPTION,
     YT_THUMB_LINK,
     PLAYLIST_LOG_CHANNEL_MESSAGE,
+    YT_MUSIC,
+    SEARCH_RESULT,
 )
 from time import time
 from random import choice

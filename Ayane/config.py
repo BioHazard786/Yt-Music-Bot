@@ -1,6 +1,7 @@
 from os import getenv
 from time import time
 from dotenv import load_dotenv
+from ytmusicapi import YTMusic
 
 try:
     load_dotenv("config.env")
@@ -25,10 +26,17 @@ class MongoConf(object):
 
 REGEX_PT = r"(youtu.*be.*)\/(watch\?v=|embed\/|v|shorts|)(.*?((?=[&#?])|$))"
 YT_THUMB_LINK = "https://i.ytimg.com/vi/{id}/mqdefault.jpg"
+YT_MUSIC = YTMusic()
 
 CAPTION = """
 <b>𝗧𝗶𝘁𝗹𝗲</b> - <code>{title}</code>
 <b>𝗔𝗿𝘁𝗶𝘀𝘁</b> - <code>{artist}</code>
+"""
+
+SEARCH_RESULT = """
+<b>➜ 𝗧𝗶𝘁𝗹𝗲 : </b><code>{title}</code>
+<b>➜ 𝗔𝗿𝘁𝗶𝘀𝘁 : </b><code>{artist}</code>
+<b>➜ 𝗗𝘂𝗿𝗮𝘁𝗶𝗼𝗻 : </b><code>{duration}</code>
 """
 
 STATUS = """
@@ -49,7 +57,7 @@ SONG_UPLOADED = """
 """
 
 LOG_CHANNEL_MESSAGE = """
-<b>➜ 𝗥𝗲𝗾𝘂𝗲𝘀𝘁𝗲𝗱 𝗕𝘆 : <i>{requested_by}</i></b>
+<>➜ 𝗥𝗲𝗾𝘂𝗲𝘀𝘁𝗲𝗱 𝗕𝘆 : {requested_by}
 
 <b>➜ 𝗦𝗼𝗻𝗴 𝗡𝗮𝗺𝗲 : <i>{song_name}</i></b>
 
@@ -59,7 +67,7 @@ LOG_CHANNEL_MESSAGE = """
 """
 
 PLAYLIST_LOG_CHANNEL_MESSAGE = """
-<b>➜ 𝗥𝗲𝗾𝘂𝗲𝘀𝘁𝗲𝗱 𝗕𝘆 : <i>{requested_by}</i></b>
+<>➜ 𝗥𝗲𝗾𝘂𝗲𝘀𝘁𝗲𝗱 𝗕𝘆 : {requested_by}
 
 <b>➜ 𝗣𝗹𝗮𝘆𝗹𝗶𝘀𝘁 𝗡𝗮𝗺𝗲 : <i>{playlist_name}</i></b>
 
@@ -78,6 +86,7 @@ HELP = f"""
 /yt [yt_url]: Download song and dump it in channel
 /help: To get this message
 """
+
 ICONS = [
     "https://telegra.ph//file/451a9169cb4bca927080f.jpg",
     "https://telegra.ph//file/9fc8c8de06567f8ae2c2b.jpg",

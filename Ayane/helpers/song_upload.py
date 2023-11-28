@@ -5,6 +5,7 @@ from Ayane.helpers.utils import get_readable_time
 async def song_upload(
     reply, info, user, song_path, song_upload_start_time, playlist=False
 ):
+    NOT_UPLOADED = f"<b>{info['title']} Not Uploaded -</b> {user.mention()}"
     artist = (
         info.get("artist")
         if info.get("artist")
@@ -20,18 +21,19 @@ async def song_upload(
     thumb_path = glob.glob(os.path.join(song_path, "*jpg"))
 
     if not final_song_path and not thumb_path:
-        if playlist:
+        if not playlist:
+            return await reply.edit_message_media(
+                InputMediaPhoto(
+                    media=choice(ICONS),
+                    caption=NOT_UPLOADED,
+                ),
+            )
+
+        else:
             return await bot.send_photo(
                 chat_id=reply.chat.id,
                 photo=choice(ICONS),
-                caption=f"<b>{info['title']} Not Uploaded -</b> {user.mention()}",
-            )
-        else:
-            return await reply.edit_media(
-                InputMediaPhoto(
-                    media=choice(ICONS),
-                    caption=f"<b>{info['title']} Not Uploaded -</b> {user.mention()}",
-                ),
+                caption=NOT_UPLOADED,
             )
 
     final_song_path = final_song_path[0]
@@ -39,7 +41,7 @@ async def song_upload(
 
     if not playlist:
         try:
-            song = await reply.edit_media(
+            song = await reply.edit_message_media(
                 InputMediaAudio(
                     media=final_song_path,
                     thumb=thumb_path,
@@ -50,22 +52,24 @@ async def song_upload(
                 )
             )
         except:
-            return await reply.edit_media(
+            return await reply.edit_message_media(
                 InputMediaPhoto(
                     media=choice(ICONS),
-                    caption=f"<b>{info['title']} Not Uploaded -</b> {user.mention()}",
+                    caption=NOT_UPLOADED,
                 ),
             )
 
-        song_upload_finish_time = get_readable_time(time() - song_upload_start_time)
-        await asyncio.sleep(3)
-        await song.reply_photo(
-            photo=thumb_path,
-            quote=True,
-            caption=SONG_UPLOADED.format(
-                song=info["title"], time=song_upload_finish_time, mention=user.mention()
-            ),
-        )
+        song_upload_finish_time = get_readable_time(
+            time() - song_upload_start_time)
+        if not isinstance(reply, CallbackQuery):
+            await asyncio.sleep(3)
+            await song.reply_photo(
+                photo=thumb_path,
+                quote=True,
+                caption=SONG_UPLOADED.format(
+                    song=info["title"], time=song_upload_finish_time, mention=user.mention
+                ),
+            )
 
     else:
         try:
@@ -82,21 +86,39 @@ async def song_upload(
             return await bot.send_photo(
                 chat_id=reply.chat.id,
                 photo=choice(ICONS),
-                caption=f"<b>{info['title']} Not Uploaded -</b> {user.mention()}",
+                caption=NOT_UPLOADED,
             )
 
-    dumped_song = await song.copy(
-        chat_id=TeleConf.DUMP_CHANNEL,
-        caption=caption,
-    )
+    if not isinstance(reply, CallbackQuery):
+        dumped_song = await song.copy(
+            chat_id=TeleConf.DUMP_CHANNEL,
+            caption=caption,
+        )
 
-    await save_song_to_db(
-        _id=info["id"],
-        title=dumped_song.audio.title,
-        artist=artist,
-        msg_id=dumped_song.id,
-        file_id=dumped_song.audio.file_id,
-    )
+        await save_song_to_db(
+            _id=info["id"],
+            title=dumped_song.audio.title,
+            artist=artist,
+            msg_id=dumped_song.id,
+            file_id=dumped_song.audio.file_id,
+        )
+    else:
+        dumped_song = await bot.send_audio(
+            chat_id=TeleConf.DUMP_CHANNEL,
+            audio=final_song_path,
+            thumb=thumb_path,
+            caption=caption,
+            duration=info["duration"],
+            performer=artist,
+            title=info["title"],
+        )
+        await save_song_to_db(
+            _id=info["id"],
+            title=dumped_song.audio.title,
+            artist=artist,
+            msg_id=dumped_song.id,
+            file_id=dumped_song.audio.file_id,
+        )
 
     if not playlist:
         await bot.send_message(
@@ -112,7 +134,7 @@ async def song_upload(
                 inline_keyboard=[
                     [
                         InlineKeyboardButton(
-                            text="Song",
+                            text="𝗦𝗼𝗻𝗴",
                             url=dumped_song.link,
                         )
                     ]
