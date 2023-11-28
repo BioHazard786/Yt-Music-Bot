@@ -81,8 +81,3 @@ def playlist_duration(songs: dict):
     for song in songs:
         total_duration += song["duration"]
     return get_readable_time(total_duration)
-
-
-def playlist_thumbnail_url(url: str):
-    regex = r".*?vi/(.*)/.*?"
-    return YT_THUMB_LINK.format(id=re.search(regex, url)[1])

@@ -242,7 +242,7 @@ async def yt_music_playlist_dl_helper(url: str, reply: Message, user: User):
         playlist_thumbnail = await loop.run_in_executor(
             ThreadPoolExecutor(1),
             lambda: dl_thumbnail_image(
-                playlist_thumbnail_url(info["thumbnails"][0]["url"]), user.id
+                YT_THUMB_LINK.format(id=info["entries"][0]["id"]), user.id
             ),
         )
         playlist_upload_finish_time = get_readable_time(
