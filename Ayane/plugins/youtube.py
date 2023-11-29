@@ -145,9 +145,7 @@ async def yt_music_dl_helper(
             InputMediaPhoto(
                 media=choice(ICONS),
                 caption=STATUS.format(
-                    title=f'{song_info.get("title")} ({song_info.get("current_song")}/{song_info.get("total_songs")})'
-                    if playlist
-                    else f"Song ({yt_id})",
+                    title=song_info.get("title", yt_id),
                     status="Downloading...📥",
                 ),
             )
@@ -175,7 +173,9 @@ async def yt_music_dl_helper(
                 return await reply.edit_message_media(
                     InputMediaPhoto(
                         media=choice(ICONS),
-                        caption=STATUS.format(title=url, status="Unavailable...❎"),
+                        caption=STATUS.format(
+                            title=song_info.get("title", url), status="Unavailable...❎"
+                        ),
                     )
                 )
         else:
@@ -183,7 +183,7 @@ async def yt_music_dl_helper(
                 chat_id=reply.chat.id,
                 photo=choice(ICONS),
                 caption=STATUS.format(
-                    title=song_info.get("title"), status="Unavailable...❎"
+                    title=song_info.get("title", url), status="Unavailable...❎"
                 ),
             )
     try:
@@ -204,9 +204,7 @@ async def yt_music_dl_helper(
                 InputMediaPhoto(
                     media=YT_THUMB_LINK.format(id=info["id"]),
                     caption=STATUS.format(
-                        title=f'{song_info.get("title")} ({song_info.get("current_song")}/{song_info.get("total_songs")})'
-                        if playlist
-                        else info["title"],
+                        title=info["title"],
                         status="Uploading...📤",
                     ),
                 )
@@ -226,11 +224,11 @@ async def yt_music_playlist_dl_helper(url: str, reply: Message, user: User):
 
         for song in info["entries"]:
             await yt_music_dl_helper(
-                song["url"],
-                reply,
-                user,
-                True,
-                {
+                url=song["url"],
+                reply=reply,
+                user=user,
+                playlist=True,
+                song_info={
                     "title": song["title"],
                     "current_song": current_song,
                     "total_songs": info["playlist_count"],

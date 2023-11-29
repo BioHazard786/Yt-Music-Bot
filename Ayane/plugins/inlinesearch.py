@@ -28,10 +28,15 @@ async def inlineSearch(client: Client, query: InlineQuery):
                     lambda: YT_MUSIC.search(query=song_name, filter="songs"),
                 )
                 for result in search_results:
+                    callback_data = (
+                        f"d|{query.from_user.id}|{result['title']}|{result['videoId']}"
+                    )
+                    if len(callback_data) > 64:
+                        callback_data = f"d|{query.from_user.id}|Song ({result['videoId']})|{result['videoId']}"
                     buttons = [
                         InlineKeyboardButton(
                             text="📥 𝗗𝗼𝘄𝗻𝗹𝗼𝗮𝗱",
-                            callback_data=f"d|{query.from_user.id}|{result['videoId']}",
+                            callback_data=callback_data,
                         ),
                         InlineKeyboardButton(
                             text="🔎 𝗦𝗲𝗮𝗿𝗰𝗵 𝗔𝗴𝗮𝗶𝗻",
@@ -117,10 +122,12 @@ async def inlineSearch(client: Client, query: InlineQuery):
 
 @bot.on_callback_query(filters.create(lambda _, __, query: query.data.startswith("d|")))
 async def song_download(client: Client, query: CallbackQuery):
-    _, user_id, video_id = query.data.split("|")
+    _, user_id, title, video_id = query.data.split("|")
     url = f"https://youtu.be/{video_id}"
     if query.from_user.id != int(user_id):
         return await query.answer("Not Allowed...❎")
     else:
         await query.answer("Downloading...📥")
-        await yt_music_dl_helper(url, query, query.from_user)
+        await yt_music_dl_helper(
+            url=url, reply=query, user=query.from_user, song_info={"title": title}
+        )
