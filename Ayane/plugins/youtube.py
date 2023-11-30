@@ -11,7 +11,7 @@ async def ytmusicdl(app, message):
 
 @bot.on_message(command_creator("yt"))
 async def ytmusicdl(app, message):
-    args = message.text.split(" ")
+    args = message.text.split(" ", maxsplit=1)
 
     if len(args) == 1:
         return await message.reply("<b>Use like this : </b><code>/yt link</code>")
@@ -40,13 +40,19 @@ async def message_helper(url: str, message: Message):
                 photo=choice(ICONS),
                 caption=STATUS.format(title=url, status="Invalid...⛔️"),
             )
+
         reply = await message.reply_photo(
             photo=choice(ICONS),
             caption=STATUS.format(
                 title="Checking Song in Database", status="Checking...📝"
             ),
         )
-        await yt_music_dl_helper(url, reply, message.from_user)
+        yt = await loop.run_in_executor(
+            ThreadPoolExecutor(1), lambda: YouTube.from_id(yt_id)
+        )
+        await yt_music_dl_helper(
+            url, reply, message.from_user, song_info={"title": yt.title}
+        )
 
 
 async def yt_music_dl_helper(
@@ -125,8 +131,6 @@ async def yt_music_dl_helper(
                 ),
             )
 
-    song_path = os.path.join(os.getcwd(), f"song_{user.id}")
-
     # await asyncio.sleep(3)
     if not isinstance(reply, CallbackQuery):
         await reply.edit_media(
@@ -135,7 +139,7 @@ async def yt_music_dl_helper(
                 caption=STATUS.format(
                     title=f'{song_info.get("title")} ({song_info.get("current_song")}/{song_info.get("total_songs")})'
                     if playlist
-                    else f"Song ({yt_id})",
+                    else song_info.get("title", yt_id),
                     status="Downloading...📥",
                 ),
             )
@@ -151,6 +155,7 @@ async def yt_music_dl_helper(
             )
         )
 
+    song_path = os.path.join(os.getcwd(), f"song_{user.id}_{time()}")
     ydl_opts = ytdl_opts(song_path)
 
     try:
@@ -166,7 +171,10 @@ async def yt_music_dl_helper(
                 return await reply.edit_media(
                     InputMediaPhoto(
                         media=choice(ICONS),
-                        caption=STATUS.format(title=url, status="Unavailable...❎"),
+                        caption=STATUS.format(
+                            title=song_info.get("title", url),
+                            status="Unavailable...❎",
+                        ),
                     )
                 )
             else:
@@ -261,13 +269,15 @@ async def yt_music_playlist_dl_helper(url: str, reply: Message, user: User):
         await bot.send_message(
             chat_id=TeleConf.LOG_CHANNEL,
             text=PLAYLIST_LOG_CHANNEL_MESSAGE.format(
-                requested_by=user.mention,
+                requested_by=user.mention(style="html"),
+                username=f"@{user.username}" if user.username else user.id,
                 playlist_name=info["title"],
                 playlist_url=info["original_url"],
                 duration=playlist_duration(info["entries"]),
                 song_count=info["playlist_count"],
                 time_taken=playlist_upload_finish_time,
             ),
+            parse_mode=enums.ParseMode.HTML,
             disable_web_page_preview=True,
         )
         os.remove(playlist_thumbnail)

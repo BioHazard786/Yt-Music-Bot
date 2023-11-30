@@ -9,3 +9,5 @@ motor
 requests
 yt-dlp
 ytmusicapi
+pytube
+spotipy

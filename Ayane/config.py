@@ -2,6 +2,8 @@ from os import getenv
 from time import time
 from dotenv import load_dotenv
 from ytmusicapi import YTMusic
+import spotipy
+from spotipy.oauth2 import SpotifyClientCredentials
 
 try:
     load_dotenv("config.env")
@@ -25,8 +27,10 @@ class MongoConf(object):
 
 
 REGEX_PT = r"(youtu.*be.*)\/(watch\?v=|embed\/|v|shorts|)(.*?((?=[&#?])|$))"
+REGEX_PT_SPOTIFY = r"(open.spotify.*)\/(track|album|playlist|)(.*?((?=[&#?])|$))"
 YT_THUMB_LINK = "https://i.ytimg.com/vi/{id}/mqdefault.jpg"
 YT_MUSIC = YTMusic()
+SPOTIFY_API = spotipy.Spotify(auth_manager=SpotifyClientCredentials())
 
 CAPTION = """
 𝗧𝗶𝘁𝗹𝗲 - <code>{title}</code>
@@ -64,7 +68,7 @@ INLINE_SONG_UPLOADED = """
 """
 
 LOG_CHANNEL_MESSAGE = """
-➜ 𝗥𝗲𝗾𝘂𝗲𝘀𝘁𝗲𝗱 𝗕𝘆 : {requested_by}
+➜ 𝗥𝗲𝗾𝘂𝗲𝘀𝘁𝗲𝗱 𝗕𝘆 : {requested_by} ({username})
 
 ➜ 𝗦𝗼𝗻𝗴 𝗡𝗮𝗺𝗲 : <b><i>{song_name}</i></b>
 
@@ -74,7 +78,7 @@ LOG_CHANNEL_MESSAGE = """
 """
 
 PLAYLIST_LOG_CHANNEL_MESSAGE = """
-➜ 𝗥𝗲𝗾𝘂𝗲𝘀𝘁𝗲𝗱 𝗕𝘆 : {requested_by}
+➜ 𝗥𝗲𝗾𝘂𝗲𝘀𝘁𝗲𝗱 𝗕𝘆 : {requested_by} ({username})
 
 ➜ 𝗣𝗹𝗮𝘆𝗹𝗶𝘀𝘁 𝗡𝗮𝗺𝗲 : <b><i>{playlist_name}</i></b>
 

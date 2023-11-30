@@ -3,7 +3,12 @@ from Ayane.helpers.utils import get_readable_time
 
 
 async def song_upload(
-    reply, info, user, song_path, song_upload_start_time, playlist=False
+    reply: Message | CallbackQuery,
+    info: dict,
+    user: User,
+    song_path: str,
+    song_upload_start_time: float,
+    playlist: bool = False,
 ):
     artist = (
         info.get("artist")
@@ -25,14 +30,14 @@ async def song_upload(
                 return await reply.edit_media(
                     InputMediaPhoto(
                         media=choice(ICONS),
-                        caption=f"{info['title']} 𝗡𝗼𝘁 𝗨𝗽𝗹𝗼𝗮𝗱𝗲𝗱 - {user.mention()}",
+                        caption=f"{info['title']} 𝗡𝗼𝘁 𝗨𝗽𝗹𝗼𝗮𝗱𝗲𝗱 - {user.mention}",
                     ),
                 )
             else:
                 return await reply.edit_message_media(
                     InputMediaPhoto(
                         media=choice(ICONS),
-                        caption=f"{info['title']} 𝗡𝗼𝘁 𝗨𝗽𝗹𝗼𝗮𝗱𝗲𝗱 - {user.mention()}",
+                        caption=f"{info['title']} 𝗡𝗼𝘁 𝗨𝗽𝗹𝗼𝗮𝗱𝗲𝗱 - {user.mention}",
                     ),
                 )
 
@@ -40,7 +45,7 @@ async def song_upload(
             return await bot.send_photo(
                 chat_id=reply.chat.id,
                 photo=choice(ICONS),
-                caption=f"{info['title']} 𝗡𝗼𝘁 𝗨𝗽𝗹𝗼𝗮𝗱𝗲𝗱 - {user.mention()}",
+                caption=f"{info['title']} 𝗡𝗼𝘁 𝗨𝗽𝗹𝗼𝗮𝗱𝗲𝗱 - {user.mention}",
             )
 
     final_song_path = final_song_path[0]
@@ -75,14 +80,14 @@ async def song_upload(
                 return await reply.edit_media(
                     InputMediaPhoto(
                         media=choice(ICONS),
-                        caption=f"{info['title']} 𝗡𝗼𝘁 𝗨𝗽𝗹𝗼𝗮𝗱𝗲𝗱 - {user.mention()}",
+                        caption=f"{info['title']} 𝗡𝗼𝘁 𝗨𝗽𝗹𝗼𝗮𝗱𝗲𝗱 - {user.mention}",
                     ),
                 )
             else:
                 return await reply.edit_message_media(
                     InputMediaPhoto(
                         media=choice(ICONS),
-                        caption=f"{info['title']} 𝗡𝗼𝘁 𝗨𝗽𝗹𝗼𝗮𝗱𝗲𝗱 - {user.mention()}",
+                        caption=f"{info['title']} 𝗡𝗼𝘁 𝗨𝗽𝗹𝗼𝗮𝗱𝗲𝗱 - {user.mention}",
                     ),
                 )
 
@@ -123,7 +128,7 @@ async def song_upload(
             return await bot.send_photo(
                 chat_id=reply.chat.id,
                 photo=choice(ICONS),
-                caption=f"{info['title']} 𝗡𝗼𝘁 𝗨𝗽𝗹𝗼𝗮𝗱𝗲𝗱 - {user.mention()}",
+                caption=f"{info['title']} 𝗡𝗼𝘁 𝗨𝗽𝗹𝗼𝗮𝗱𝗲𝗱 - {user.mention}",
             )
 
     if not isinstance(reply, CallbackQuery):
@@ -161,11 +166,13 @@ async def song_upload(
         await bot.send_message(
             chat_id=TeleConf.LOG_CHANNEL,
             text=LOG_CHANNEL_MESSAGE.format(
-                requested_by=user.mention,
+                requested_by=f"<a href='tg://user?id={user.id}'>{user.first_name}</a>",
+                username=f"@{user.username}" if user.username else user.id,
                 song_name=info["title"],
                 song_url=info["original_url"],
                 time_taken=song_upload_finish_time,
             ),
+            parse_mode=enums.ParseMode.HTML,
             disable_web_page_preview=True,
             reply_markup=InlineKeyboardMarkup(
                 inline_keyboard=[
@@ -181,3 +188,4 @@ async def song_upload(
 
     os.remove(final_song_path)
     os.remove(thumb_path)
+    os.rmdir(song_path)

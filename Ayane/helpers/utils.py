@@ -71,7 +71,14 @@ def ytdl_opts(song_path: str):
 
 def extract_yt_id(url: str):
     if match := re.search(REGEX_PT, url):
-        return match[3]
+        return match[3].strip()
+    else:
+        raise Exception("Link is Invalid")
+
+
+def extract_spotify_id(url: str):
+    if match := re.search(REGEX_PT_SPOTIFY, url):
+        return match[3].strip()
     else:
         raise Exception("Link is Invalid")
 

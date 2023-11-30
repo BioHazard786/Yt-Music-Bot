@@ -1,6 +1,7 @@
 *__pycache__*
 *.session*
 *.vscode*
+*.cache*
 ./*.py
 *env 
 .restartmsg
